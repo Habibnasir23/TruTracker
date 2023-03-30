@@ -29,7 +29,7 @@ def get_directions_response():
 
 
 @app.route("/")
-def fullscreen():
+def home():
     """Simple example of a fullscreen map."""
 
     response = get_directions_response()
