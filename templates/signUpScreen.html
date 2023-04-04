@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Login Page with Background Image Example</title>
+  <link rel="stylesheet" href={{ url_for('static', filename='css/signUpStyles.css') }}>
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div id="bg"></div>
+
+<form>
+   <div class="form-field">
+      <input type="name" placeholder="Name" required/>
+  </div>
+  <div class="form-field">
+    <input type="email" placeholder="Email" required/>
+  </div>
+  
+  <div class="form-field">
+    <input type="password" placeholder="Password" required/>
+  </div>
+  
+  <div class="form-field">
+    <button class="btn" type="submit">Sign up</button>
+  </div>
+</form>
+<!-- partial -->
+  
+</body>
+</html>
