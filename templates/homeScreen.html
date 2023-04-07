@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-wdith, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Document</title>
-        <link rel="stylesheet" href="css/styles.css">
+        <link rel="stylesheet" href={{ url_for('static', filename='css/homeStyles.css') }}>
     </head>
     <body>
         <div class="Menu">
@@ -24,6 +24,8 @@
               </form>
             <h5><small>Testing</small> </h5>
         </div>
-        <script src="app.js"></script>
+        <div class="content">
+            {% block content %} {% endblock %}
+        </div>
     </body>
     </html>

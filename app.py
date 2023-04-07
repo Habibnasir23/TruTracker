@@ -8,12 +8,12 @@
     And then head to http://127.0.0.1:5000/ in your browser to see the map displayed
 """
 
-from flask import Flask, render_template_string
+from flask import Flask, render_template
 
 import folium
 import requests
 import pandas as pd
-app = Flask(__name__)
+app = Flask(__name__, template_folder = 'templates', static_folder='static')
 
 
 
@@ -27,9 +27,16 @@ def get_directions_response():
     response = requests.request("GET", url, headers=headers, params=querystring)
     return response
 
-
 @app.route("/")
-def home():
+def login():
+    return render_template('loginScreen.html')
+
+@app.route("/signup")
+def signUp():
+    return render_template('signUpScreen.html')
+
+@app.route("/map")
+def homeMap():
     """Simple example of a fullscreen map."""
 
     response = get_directions_response()
@@ -50,6 +57,10 @@ def home():
 
     return m.get_root().render()
 
+@app.route("/test")
+def test():
+    return render_template('homeScreen.html')
+
 
 @app.route("/iframe")
 def iframe():
@@ -61,17 +72,7 @@ def iframe():
     m.get_root().height = "600px"
     iframe = m.get_root()._repr_html_()
 
-    return render_template_string(
-        """
-            <!DOCTYPE html>
-            <html>
-                <head></head>
-                <body>
-                    <h1>Using an iframe</h1>
-                    {{ iframe|safe }}
-                </body>
-            </html>
-        """,
+    return render_template(
         iframe=iframe,
     )
 
@@ -89,22 +90,7 @@ def components():
     body_html = m.get_root().html.render()
     script = m.get_root().script.render()
 
-    return render_template_string(
-        """
-            <!DOCTYPE html>
-            <html>
-                <head>
-                    {{ header|safe }}
-                </head>
-                <body>
-                    <h1>Using components</h1>
-                    {{ body_html|safe }}
-                    <script>
-                        {{ script|safe }}
-                    </script>
-                </body>
-            </html>
-        """,
+    return render_template(
         header=header,
         body_html=body_html,
         script=script,
