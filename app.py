@@ -13,8 +13,109 @@ from flask import Flask, render_template
 import folium
 import requests
 import pandas as pd
-app = Flask(__name__, template_folder = 'templates', static_folder='static')
 
+from flask import Flask, request, render_template, session, redirect, url_for
+from flask_sqlalchemy import SQLAlchemy
+from datetime import timedelta
+
+db = SQLAlchemy()
+
+
+def create_app():
+    app1 = Flask(__name__, template_folder = 'templates', static_folder='static')
+    app1.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Trutracker.sqlite3'
+    app1.config['SECRET_KEY'] = "random string"
+    db.init_app(app1)
+    # after 5 minutes of inactivity, user's session will expire. They will need to log in again
+    app1.permanent_session_lifetime = timedelta(minutes=5)
+    return app1
+
+
+
+class User(db.Model):
+    user_name = db.Column(db.String(100), primary_key=True)
+    user_pswd = db.Column(db.String(100))
+
+    def __init__(self, name, pswd):
+        self.user_name = name
+        self.user_pswd = pswd
+
+
+class Locations(db.Model):
+    building_name = db.Column(db.String(100))
+    building_id = db.Column(db.Integer, primary_key=True)
+    building_latitude = db.Column(db.Integer)
+    building_longitude = db.Column(db.Integer)
+
+    def __init__(self, name, build_id, lat, long):
+        self.building_name = name
+        self.building_id = build_id
+        self.building_latitude = lat
+        self.building_longitude = long
+
+
+class Ryle_Hall(db.Model):
+    building_name = db.Column(db.String(100), primary_key=True)
+    distance_from_building = db.Column(db.Integer)
+    time_from_building = db.Column(db.Integer)
+
+    def __init__(self, name, dist, time):
+        self.building_name = name
+        self.distance_from_building = dist
+        self.time_from_building = time
+
+
+def add_buildings():
+    loc_1 = Locations("West Campus Suites", 1, 1211, 1222)
+    db.session.add(loc_1)
+    db.session.commit()
+    loc_2 = Locations("Recreation Center", 2, 1311, 1333)
+    db.session.add(loc_2)
+    db.session.commit()
+
+
+def add_ryle_data():
+    build_1 = Ryle_Hall("West Campus", 2, 20)
+    db.session.add(build_1)
+    db.session.commit()
+    build_2 = Ryle_Hall("Recreation Center", 1, 15)
+    db.session.add(build_2)
+    db.session.commit()
+
+
+def add_user():
+    user1 = User("habib23", "tru123")
+    db.session.add(user1)
+    db.session.commit()
+    user2 = User("mhmd123", "prince123")
+    db.session.add(user2)
+    db.session.commit()
+
+
+def get_lat(name):
+    this_location = Locations.query.filter_by(building_name=name).first()
+    return this_location.building_latitude
+
+
+def get_long(name):
+    this_location = Locations.query.filter_by(building_name=name).first()
+    return this_location.building_longitude
+
+
+def verify_username(username):
+    exists = db.session.query(db.exists().where(User.user_name == username)).scalar()
+    if exists:
+        print("this username is valid")
+    else:
+        print("this username is not valid")
+
+
+def verify_pswd(password):
+    exists = db.session.query(db.exists().where(User.user_pswd == password)).scalar()
+    if exists:
+        print("this password is valid")
+    else:
+        print("this password is not valid")
 
 
 def get_directions_response():
@@ -27,9 +128,30 @@ def get_directions_response():
     response = requests.request("GET", url, headers=headers, params=querystring)
     return response
 
+
+app = create_app()
+app.app_context().push()
+db.drop_all()
+db.create_all()
+
+
+
 @app.route("/")
 def login():
+    add_buildings()
+    add_ryle_data()
+    add_user()
+    verify_username("habib23")
+    verify_pswd("tru123")
+    verify_username("hvhb")
+    verify_pswd("sadwad")
+
+    this_lat = (get_lat("West Campus Suites"))
+    print(this_lat)
+    this_long = (get_long("West Campus Suites"))
+    print(this_long)
     return render_template('loginScreen.html')
+
 
 @app.route("/signup")
 def signUp():
