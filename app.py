@@ -144,7 +144,7 @@ def login():
     verify_username("habib23")
     verify_pswd("tru123")
     verify_username("hvhb")
-    verify_pswd("sadwad")
+    verify_pswd("sadwa")
 
     this_lat = (get_lat("West Campus Suites"))
     print(this_lat)
