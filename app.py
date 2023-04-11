@@ -18,15 +18,18 @@ from flask import Flask, request, render_template, session, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import timedelta
 
+from flask_sqlalchemy.session import Session
+
 db = SQLAlchemy()
 
+
 def transfer_data_from_file_to_database():
-    with open("Entrances.txt",'r') as file:
+    with open("Entrances.txt", 'r') as file:
         for line in file:
             data_list = line.strip().split(',')
             Building_name = data_list[0]
             Building_door = data_list[1]
-            Latitdude = data_list[2]
+            Latitude = data_list[2]
             Longitude = data_list[3]
 
 
@@ -169,8 +172,11 @@ db.create_all()
 
 
 @app.route("/")
-def login():
-    read_file()
+def index():
+    if not session.get("name"):
+        return redirect("/login")
+    return render_template('index.html')
+    transfer_data_from_file_to_database()
     add_buildings()
     add_ryle_data()
     add_user()
@@ -186,9 +192,24 @@ def login():
     return render_template('loginScreen.html')
 
 
+@app.route("/login", methods=["POST", "GET"])
+def login():
+    if request.method == "POST":
+        session["name"] = request.form.get("name")
+        return redirect("/")
+    return render_template("loginScreen.html")
+
+
+@app.route("/logout")
+def logout():
+    session["name"] = None
+    return redirect("/")
+
+
 @app.route("/signup")
 def signUp():
     return render_template('signUpScreen.html')
+
 
 @app.route("/map")
 def homeMap():
