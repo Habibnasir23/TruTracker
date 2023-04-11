@@ -20,6 +20,15 @@ from datetime import timedelta
 
 db = SQLAlchemy()
 
+def transfer_data_from_file_to_database():
+    with open("Entrances.txt",'r') as file:
+        for line in file:
+            data_list = line.strip().split(',')
+            Building_name = data_list[0]
+            Building_door = data_list[1]
+            Latitdude = data_list[2]
+            Longitude = data_list[3]
+
 
 def create_app():
     app1 = Flask(__name__, template_folder = 'templates', static_folder='static')
@@ -138,6 +147,7 @@ db.create_all()
 
 @app.route("/")
 def login():
+    read_file()
     add_buildings()
     add_ryle_data()
     add_user()
