@@ -18,16 +18,22 @@ from flask import Flask, request, render_template, session, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import timedelta
 
+from flask_sqlalchemy.session import Session
+
 db = SQLAlchemy()
 
+
 def transfer_data_from_file_to_database():
-    with open("Entrances.txt",'r') as file:
+    with open("Entrances.txt", 'r') as file:
         for line in file:
             data_list = line.strip().split(',')
             Building_name = data_list[0]
             Building_door = data_list[1]
-            Latitdude = data_list[2]
-            Longitude = data_list[3]
+            Latitude = float(data_list[2])
+            Longitude = float(data_list[3])
+            this_location = Locations(Building_name, Building_door, Latitude, Longitude)
+            db.session.add(this_location)
+            db.session.commit()
 
 
 def create_app():
@@ -50,10 +56,10 @@ class User(db.Model):
 
 
 class Locations(db.Model):
-    building_name = db.Column(db.String(100), primary_key=True)
+    building_name = db.Column(db.String(100))
     building_door = db.Column(db.String(100))
-    building_latitude = db.Column(db.Integer)
-    building_longitude = db.Column(db.Integer)
+    building_latitude = db.Column((db.Float), primary_key=True)
+    building_longitude = db.Column(db.Float)
 
     def __init__(self, name, build_door, lat, long):
         self.building_name = name
@@ -67,8 +73,8 @@ class Saved_Locations(db.Model):
     saved_name = db.Column(db.String(100))
     building_name = db.Column(db.String(100))
     door_name = db.Column(db.String(100))
-    latitude = db.Column(db.Integer)
-    longitude = db.Column(db.Integer)
+    latitude = db.Column(db.Float)
+    longitude = db.Column(db.Float)
 
     def __init__(self, username, savedname, buildname, doorname, lat, long):
         self.user_name = username
@@ -169,8 +175,11 @@ db.create_all()
 
 
 @app.route("/")
-def login():
-    read_file()
+def index():
+    #if not session.get("name"):
+     #   return redirect("/login")
+    #return render_template('index.html')
+    transfer_data_from_file_to_database()
     add_buildings()
     add_ryle_data()
     add_user()
@@ -186,9 +195,24 @@ def login():
     return render_template('loginScreen.html')
 
 
+@app.route("/login", methods=["POST", "GET"])
+def login():
+    if request.method == "POST":
+        session["name"] = request.form.get("name")
+        return redirect("/")
+    return render_template("loginScreen.html")
+
+
+@app.route("/logout")
+def logout():
+    session["name"] = None
+    return redirect("/")
+
+
 @app.route("/signup")
 def signUp():
     return render_template('signUpScreen.html')
+
 
 @app.route("/map")
 def homeMap():
