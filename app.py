@@ -22,14 +22,13 @@ db = SQLAlchemy()
 
 
 def create_app():
-    app1 = Flask(__name__, template_folder = 'templates', static_folder='static')
+    app1 = Flask(__name__, template_folder='templates', static_folder='static')
     app1.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Trutracker.sqlite3'
     app1.config['SECRET_KEY'] = "random string"
     db.init_app(app1)
     # after 5 minutes of inactivity, user's session will expire. They will need to log in again
     app1.permanent_session_lifetime = timedelta(minutes=5)
     return app1
-
 
 
 class User(db.Model):
@@ -42,14 +41,31 @@ class User(db.Model):
 
 
 class Locations(db.Model):
-    building_name = db.Column(db.String(100))
-    building_id = db.Column(db.Integer, primary_key=True)
+    building_name = db.Column(db.String(100), primary_key=True)
+    building_door = db.Column(db.String(100))
     building_latitude = db.Column(db.Integer)
     building_longitude = db.Column(db.Integer)
 
-    def __init__(self, name, build_id, lat, long):
+    def __init__(self, name, build_door, lat, long):
         self.building_name = name
-        self.building_id = build_id
+        self.building_door = build_door
+        self.building_latitude = lat
+        self.building_longitude = long
+
+
+class Saved_Locations(db.Model):
+    user_name = db.Column(db.String(100), primary_key=True)
+    saved_name = db.Column(db.String(100))
+    building_name = db.Column(db.String(100))
+    door_name = db.Column(db.String(100))
+    latitude = db.Column(db.Integer)
+    longitude = db.Column(db.Integer)
+
+    def __init__(self, username, savedname, buildname, doorname, lat, long):
+        self.user_name = username
+        self.saved_name = savedname
+        self.building_name = buildname
+        self.door_name = doorname
         self.building_latitude = lat
         self.building_longitude = long
 
@@ -66,10 +82,10 @@ class Ryle_Hall(db.Model):
 
 
 def add_buildings():
-    loc_1 = Locations("West Campus Suites", 1, 1211, 1222)
+    loc_1 = Locations("West Campus Suites", "North", 1211, 1222)
     db.session.add(loc_1)
     db.session.commit()
-    loc_2 = Locations("Recreation Center", 2, 1311, 1333)
+    loc_2 = Locations("Recreation Center", "South", 1311, 1333)
     db.session.add(loc_2)
     db.session.commit()
 
@@ -89,6 +105,14 @@ def add_user():
     db.session.commit()
     user2 = User("mhmd123", "prince123")
     db.session.add(user2)
+    db.session.commit()
+
+
+def add_saved_location(username, buildname, savedname):
+    this_lat = get_lat(buildname)
+    this_long = get_long(buildname)
+    demo1 = Saved_Locations(username, savedname, buildname, this_lat, this_long)
+    db.session.add(demo1)
     db.session.commit()
 
 
@@ -135,7 +159,6 @@ db.drop_all()
 db.create_all()
 
 
-
 @app.route("/")
 def login():
     add_buildings()
@@ -176,8 +199,8 @@ def homeMap():
     ne = df[['Lat', 'Lon']].max().values.tolist()
     m.fit_bounds([sw, ne])
 
-
     return m.get_root().render()
+
 
 @app.route("/test")
 def test():
