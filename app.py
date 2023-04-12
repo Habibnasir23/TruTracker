@@ -179,26 +179,26 @@ app = create_app()
 app.app_context().push()
 db.drop_all()
 db.create_all()
+transfer_data_from_file_to_database()
+add_buildings()
+add_ryle_data()
+add_user()
+verify_username("habib23")
+verify_pswd("tru123")
+verify_username("hvhb")
+verify_pswd("sadwa")
 
+this_lat = (get_lat("West Campus Suites"))
+print(this_lat)
+this_long = (get_long("West Campus Suites"))
+print(this_long)
 
 @app.route("/")
 def index():
     #if not session.get("name"):
      #   return redirect("/login")
     #return render_template('index.html')
-    transfer_data_from_file_to_database()
-    add_buildings()
-    add_ryle_data()
-    add_user()
-    verify_username("habib23")
-    verify_pswd("tru123")
-    verify_username("hvhb")
-    verify_pswd("sadwa")
 
-    this_lat = (get_lat("West Campus Suites"))
-    print(this_lat)
-    this_long = (get_long("West Campus Suites"))
-    print(this_long)
     return render_template('loginScreen.html')
 
 
@@ -218,7 +218,8 @@ def logout():
 
 @app.route("/signup", methods=["GET", "POST"])
 def signUp():
-    if request.metho == "POST":
+    session.permanent = True
+    if request.method == "POST":
         email = request.form.get("email")
         name = request.form.get("name")
         password = request.form.get("password")
