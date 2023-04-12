@@ -18,7 +18,6 @@ from flask import Flask, request, render_template, session, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import timedelta
 
-from flask_sqlalchemy.session import Session
 
 db = SQLAlchemy()
 
@@ -176,9 +175,9 @@ db.create_all()
 
 @app.route("/")
 def index():
-    #if not session.get("name"):
-     #   return redirect("/login")
-    #return render_template('index.html')
+    if not session.get("name"):
+        return redirect("/login")
+    return render_template('index.html')
     transfer_data_from_file_to_database()
     add_buildings()
     add_ryle_data()
@@ -211,6 +210,7 @@ def logout():
 
 @app.route("/signup")
 def signUp():
+    name = request.form.get("customer")
     return render_template('signUpScreen.html')
 
 
