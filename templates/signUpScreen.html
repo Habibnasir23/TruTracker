@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login Form validation in HTML & CSS | CodingNepal</title>
+  <title>Login Form validation in HTML & CSS</title>
   <link rel="stylesheet" href={{ url_for('static', filename='css/signUpStyles.css') }}>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
 </head>
@@ -16,6 +16,7 @@
         <div class="input-area">
             <i class="icon fas fa-regular fa-id-card"></i>
             <input type="text" placeholder="Name">
+            <input i="name" type="text" name="name">
             <i class="error error-icon fas fa-exclamation-circle"></i>
         </div>
         <div class="error error-txt">Name can't be blank</div>
@@ -23,6 +24,7 @@
       <div class="field email">
         <div class="input-area">
           <input type="text" placeholder="Email Address">
+          <input i="email" type="text" name="email">
           <i class="icon fas fa-envelope"></i>
           <i class="error error-icon fas fa-exclamation-circle"></i>
         </div>
@@ -31,6 +33,7 @@
       <div class="field password">
         <div class="input-area">
           <input type="password" placeholder="Password">
+          <input i="password" type="text" name="password">
           <i class="icon fas fa-lock"></i>
           <i class="error error-icon fas fa-exclamation-circle"></i>
         </div>
@@ -41,6 +44,5 @@
   </div>
 
   <script src="/js/signUpScript.js"></script>
-
 </body>
 </html>
