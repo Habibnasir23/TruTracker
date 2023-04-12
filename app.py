@@ -18,7 +18,6 @@ from flask import Flask, request, render_template, session, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import timedelta
 
-from flask_sqlalchemy.session import Session
 
 db = SQLAlchemy()
 
@@ -47,18 +46,20 @@ def create_app():
 
 
 class User(db.Model):
-    user_name = db.Column(db.String(100), primary_key=True)
+    user_name = db.Column(db.String(100))
+    user_email = db.Column(db.String(100), primary_key=True)
     user_pswd = db.Column(db.String(100))
 
-    def __init__(self, name, pswd):
+    def __init__(self, name, email, pswd):
         self.user_name = name
+        self.user_email = email
         self.user_pswd = pswd
 
 
 class Locations(db.Model):
     building_name = db.Column(db.String(100))
     building_door = db.Column(db.String(100))
-    building_latitude = db.Column((db.Float), primary_key=True)
+    building_latitude = db.Column(db.Float, primary_key=True)
     building_longitude = db.Column(db.Float)
 
     def __init__(self, name, build_door, lat, long):
@@ -115,11 +116,17 @@ def add_ryle_data():
 
 
 def add_user():
-    user1 = User("habib23", "tru123")
+    user1 = User("habib", "habib@gmail.com", "tru123")
     db.session.add(user1)
     db.session.commit()
-    user2 = User("mhmd123", "prince123")
+    user2 = User("mhmd123", "mhmd@gmail.com", "prince123")
     db.session.add(user2)
+    db.session.commit()
+
+
+def add_user2(u_name, u_email, u_password):
+    user = User(u_name, u_email, u_password)
+    db.session.add(user)
     db.session.commit()
 
 
@@ -209,8 +216,17 @@ def logout():
     return redirect("/")
 
 
-@app.route("/signup")
+@app.route("/signup", methods=["GET", "POST"])
 def signUp():
+    if request.metho == "POST":
+        email = request.form.get("email")
+        name = request.form.get("name")
+        password = request.form.get("password")
+        session['name'] = name
+        session['email'] = email
+        session['password'] = password
+        add_user2(session['name'], session['email'], session['password'])
+
     return render_template('signUpScreen.html')
 
 
