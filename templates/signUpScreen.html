@@ -1,32 +1,46 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Login Page with Background Image Example</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Form validation in HTML & CSS | CodingNepal</title>
   <link rel="stylesheet" href={{ url_for('static', filename='css/signUpStyles.css') }}>
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
 </head>
 <body>
-<!-- partial:index.partial.html -->
-<div id="bg"></div>
+  <div id="bg"></div>
+  <div class="wrapper">
+    <header>Join TruTracker!</header>
+    <form action="#">
+       <div class="field name">
+        <div class="input-area">
+            <i class="icon fas fa-regular fa-id-card"></i>
+            <input type="text" placeholder="Name">
+            <i class="error error-icon fas fa-exclamation-circle"></i>
+        </div>
+        <div class="error error-txt">Name can't be blank</div>
+      </div>
+      <div class="field email">
+        <div class="input-area">
+          <input type="text" placeholder="Email Address">
+          <i class="icon fas fa-envelope"></i>
+          <i class="error error-icon fas fa-exclamation-circle"></i>
+        </div>
+        <div class="error error-txt">Email can't be blank</div>
+      </div>
+      <div class="field password">
+        <div class="input-area">
+          <input type="password" placeholder="Password">
+          <i class="icon fas fa-lock"></i>
+          <i class="error error-icon fas fa-exclamation-circle"></i>
+        </div>
+        <div class="error error-txt">Password can't be blank</div>
+      </div>
+      <input type="submit" value="Sign-up">
+    </form>
+  </div>
 
-<form>
-   <div class="form-field">
-      <input type="name" placeholder="Name" required/>
-  </div>
-  <div class="form-field">
-    <input type="email" placeholder="Email" required/>
-  </div>
-  
-  <div class="form-field">
-    <input type="password" placeholder="Password" required/>
-  </div>
-  
-  <div class="form-field">
-    <button class="btn" type="submit">Sign up</button>
-  </div>
-</form>
-<!-- partial -->
-  
+  <script src="/js/signUpScript.js"></script>
+
 </body>
 </html>

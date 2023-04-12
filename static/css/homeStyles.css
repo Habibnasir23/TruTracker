@@ -83,10 +83,11 @@ form {
     background-color: #3e8e41;
   }
 
+
 .container{
     width: 100%;
     position: absolute;
-    top: 35%;
+    top: 10%;
     text-align: center;
 }
 
