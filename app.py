@@ -189,11 +189,11 @@ def index():
     transfer_data_from_file_to_database()
     add_buildings()
     add_ryle_data()
-    add_user()
-    verify_username("habib23")
-    verify_pswd("tru123")
-    verify_username("hvhb")
-    verify_pswd("sadwa")
+    #add_user()
+    #verify_username("habib23")
+    #verify_pswd("tru123")
+    #verify_username("hvhb")
+    #verify_pswd("sadwa")
 
     this_lat = (get_lat("West Campus Suites"))
     print(this_lat)
@@ -205,8 +205,8 @@ def index():
 @app.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == "POST":
-        session["name"] = request.form.get("name")
-        return redirect("/")
+        session["email"] = request.form.get("email")
+        return redirect("/map")
     return render_template("loginScreen.html")
 
 
@@ -218,16 +218,16 @@ def logout():
 
 @app.route("/signup", methods=["GET", "POST"])
 def signUp():
-    if request.metho == "POST":
+    if request.method == "POST":
         email = request.form.get("email")
         name = request.form.get("name")
         password = request.form.get("password")
         session['name'] = name
         session['email'] = email
         session['password'] = password
-        add_user2(session['name'], session['email'], session['password'])
-
-    return render_template('signUpScreen.html')
+        add_user2(name, email, password)
+        return redirect("/login")
+    return render_template("signUpScreen.html")
 
 
 @app.route("/map")
