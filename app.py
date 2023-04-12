@@ -198,15 +198,14 @@ def index():
     #if not session.get("name"):
      #   return redirect("/login")
     #return render_template('index.html')
-
     return render_template('loginScreen.html')
 
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == "POST":
-        session["name"] = request.form.get("name")
-        return redirect("/")
+        session["email"] = request.form.get("email")
+        return redirect("/map")
     return render_template("loginScreen.html")
 
 
@@ -226,9 +225,9 @@ def signUp():
         session['name'] = name
         session['email'] = email
         session['password'] = password
-        add_user2(session['name'], session['email'], session['password'])
-
-    return render_template('signUpScreen.html')
+        add_user2(name, email, password)
+        return redirect("/login")
+    return render_template("signUpScreen.html")
 
 
 @app.route("/map")
