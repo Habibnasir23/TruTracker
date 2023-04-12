@@ -11,20 +11,18 @@
   <div id="bg"></div>
   <div class="wrapper">
     <header>Join TruTracker!</header>
-    <form action="#">
+    <form method="post" action="#">
        <div class="field name">
         <div class="input-area">
+            <input i="name" type="text" placeholder="Name" name="name">
             <i class="icon fas fa-regular fa-id-card"></i>
-            <input type="text" placeholder="Name">
-            <input i="name" type="text" name="name">
             <i class="error error-icon fas fa-exclamation-circle"></i>
         </div>
         <div class="error error-txt">Name can't be blank</div>
       </div>
       <div class="field email">
         <div class="input-area">
-          <input type="text" placeholder="Email Address">
-          <input i="email" type="text" name="email">
+          <input i="email" type="text" placeholder="Email Address" name="email">
           <i class="icon fas fa-envelope"></i>
           <i class="error error-icon fas fa-exclamation-circle"></i>
         </div>
@@ -32,8 +30,7 @@
       </div>
       <div class="field password">
         <div class="input-area">
-          <input type="password" placeholder="Password">
-          <input i="password" type="text" name="password">
+          <input i="password" type="password" placeholder="Password" name="password">
           <i class="icon fas fa-lock"></i>
           <i class="error error-icon fas fa-exclamation-circle"></i>
         </div>

@@ -2,23 +2,38 @@ const form = document.querySelector("form");
 eField = form.querySelector(".email"),
 eInput = eField.querySelector("input"),
 pField = form.querySelector(".password"),
-pInput = pField.querySelector("input");
+pInput = pField.querySelector("input"),
+nField = form.querySelector(".name"),
+nInput = nField.querySelector("input");
 
 form.onsubmit = (e)=>{
 
   e.preventDefault(); //preventing from form submitting
 
-  //if email and password is blank then add shake class in it else call specified function
+  //if name, email, or password are blank then add shake class in it else call specified function
+  (nInput.value == "") ? nField.classList.add("shake", "error") : checkName();
   (eInput.value == "") ? eField.classList.add("shake", "error") : checkEmail();
   (pInput.value == "") ? pField.classList.add("shake", "error") : checkPass();
 
   setTimeout(()=>{ //remove shake class after 500ms
+    nField.classList.remove("shake");
     eField.classList.remove("shake");
     pField.classList.remove("shake");
   }, 500);
 
+  nInput.onkeyup = ()=>{checkName();} //calling checkEmail function on email input keyup
   eInput.onkeyup = ()=>{checkEmail();} //calling checkEmail function on email input keyup
   pInput.onkeyup = ()=>{checkPass();} //calling checkPassword function on pass input keyup
+
+  function checkName(){
+    if(pInput.value == ""){ //if name is empty then add error and remove valid class
+      pField.classList.add("error");
+      pField.classList.remove("valid");
+    }else{ //if name is empty then remove error and add valid class
+      pField.classList.remove("error");
+      pField.classList.add("valid");
+    }
+  }
 
   function checkEmail(){ //checkEmail function
     let pattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/; //pattern for validate email
@@ -45,7 +60,7 @@ form.onsubmit = (e)=>{
   }
 
   //if eField and pField doesn't contains error class that means user filled details properly
-  if(!eField.classList.contains("error") && !pField.classList.contains("error")){
+  if(!nField.classList.contains("error") && !eField.classList.contains("error") && !pField.classList.contains("error")){
     window.location.href = form.getAttribute("action"); //redirecting user to the specified url which is inside action attribute of form tag
   }
 }
