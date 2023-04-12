@@ -148,20 +148,24 @@ def get_long(name):
     return this_location.building_longitude
 
 
-def verify_username(username):
-    exists = db.session.query(db.exists().where(User.user_name == username)).scalar()
+def verify_email(useremail):
+    exists = db.session.query(db.exists().where(User.user_email == useremail)).scalar()
     if exists:
         print("this username is valid")
+        return True
     else:
         print("this username is not valid")
+        return False
 
 
 def verify_pswd(password):
     exists = db.session.query(db.exists().where(User.user_pswd == password)).scalar()
     if exists:
         print("this password is valid")
+        return True
     else:
         print("this password is not valid")
+        return False
 
 
 def get_directions_response():
@@ -183,9 +187,9 @@ transfer_data_from_file_to_database()
 add_buildings()
 add_ryle_data()
 add_user()
-verify_username("habib23")
+verify_email("habibnasir23@gmail.com")
 verify_pswd("tru123")
-verify_username("hvhb")
+verify_email("hvhb@gmail.com")
 verify_pswd("sadwa")
 
 this_lat = (get_lat("West Campus Suites"))
@@ -204,10 +208,15 @@ def index():
 @app.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == "POST":
-        session["email"] = request.form.get("email")
-        return redirect("/map")
+        email = request.form.get("email")
+        session["email"] = email
+        password = request.form.get("password")
+        session['password'] = password
+        if (verify_email(email) and verify_pswd(password)):
+            return redirect("/map")
+        else:
+            return render_template("loginScreen.html")
     return render_template("loginScreen.html")
-
 
 @app.route("/logout")
 def logout():
