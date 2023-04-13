@@ -34,6 +34,14 @@ def transfer_data_from_file_to_database():
             db.session.add(this_location)
             db.session.commit()
 
+def populate_drop_down_menu(buidling_dict):
+    with open("Entrances.txt") as file:
+        for line in file:
+            data_list = line.strip().split(',')
+            if data_list[0] in buidling_dict.keys():
+                buidling_dict[data_list[0]].append(data_list[1])
+            else:
+                buidling_dict[data_list[0]] = [data_list[1]]
 
 def create_app():
     app1 = Flask(__name__, template_folder='templates', static_folder='static')
@@ -204,6 +212,11 @@ def index():
     #return render_template('index.html')
     return render_template('loginScreen.html')
 
+@app.route("/home")
+def home():
+    building_dict = {}
+    populate_drop_down_menu(building_dict)
+    return render_template('homeScreen.html', building_name = building_dict.keys(), building_dict =building_dict)
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
