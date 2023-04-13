@@ -41,9 +41,9 @@ def populate_drop_down_menu(buidling_dict):
         for line in file:
             data_list = line.strip().split(',')
             if data_list[0] in buidling_dict.keys():
-                buidling_dict[data_list[0]].append(data_list[1])
+                buidling_dict[data_list[0]].append(data_list[1].lstrip())
             else:
-                buidling_dict[data_list[0]] = [data_list[1]]
+                buidling_dict[data_list[0]] = [data_list[1].lstrip()]
 
 
 def create_app():
@@ -240,9 +240,11 @@ def home():
 
         building_name_dist = request.form.get("building_name_dist")
         door_name_dist = request.form.get("door_name_dist")
-
-        print(building_name_dist,door_name_dist)
-        return redirect("/map")
+        lat_src = (get_lat(building_name_src, door_name_src))
+        long_src = (get_long(building_name_src, door_name_src))
+        lat_dist = (get_lat(building_name_dist, door_name_dist))
+        long_dist = (get_long(building_name_dist, door_name_dist))
+        return redirect(url_for("homeMap",lat_src = lat_src,long_src=long_src,lat_dist=lat_dist,long_dist=long_dist))
 
     return render_template('homeScreen.html', building_name=building_dict.keys(), building_dict=building_dict)
 
@@ -282,11 +284,11 @@ def signUp():
     return render_template("signUpScreen.html")
 
 
-@app.route("/map")
-def homeMap():
+@app.route("/map/<lat_src>/<long_src>/<lat_dist>/<long_dist>")
+def homeMap(lat_src,long_src,lat_dist,long_dist):
     """Simple example of a fullscreen map."""
 
-    response = get_directions_response("40.18206601897366","-92.57801895262784","40.18516234602028","-92.57947314536754")
+    response = get_directions_response(lat_src,long_src,lat_dist,long_dist)
     mls = response.json()['features'][0]['geometry']['coordinates']
     points = [(i[1], i[0]) for i in mls[0]]
 
