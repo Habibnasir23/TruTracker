@@ -9,9 +9,24 @@
 
     <script>
     let building_dict = {{ building_dict|tojson }};
-    function updateBuildingdoor() {
-        const building_name_js = document.getElementById('building_name').value;
-        const door_name_js = document.getElementById('door_name');
+    function updateBuildingdoor_src() {
+        const building_name_js = document.getElementById('building_name_src').value;
+        const door_name_js = document.getElementById('door_name_src');
+        door_name_js.innerHTML = ''; // Clear previous options
+        const door_value = building_dict[building_name_js];
+        if (door_value) {
+            for (let i = 0; i < door_value.length; i++) {
+                const option = document.createElement('option');
+                option.text = door_value[i];
+                option.value = door_value[i];
+                door_name_js.add(option);
+            }
+        }
+    }
+
+    function updateBuildingdoor_dist() {
+        const building_name_js = document.getElementById('building_name_dist').value;
+        const door_name_js = document.getElementById('door_name_dist');
         door_name_js.innerHTML = ''; // Clear previous options
         const door_value = building_dict[building_name_js];
         if (door_value) {
@@ -37,18 +52,36 @@
 <div class="container">
     <h1>TruTracker</h1>
     <form action="/search" method="get">
-        <label for="building_name">Building Name:</label>
-        <select id="building_name" onchange="updateBuildingdoor()">
-            <option value="" disabled selected>Select Building</option>
-            {% for building in building_name %}#}
-                <option value="{{ building }}">{{ building }}</option>#}
+        <div id="starting_location">
+            <p>Source</p>
+            <label for="building_name_src">Building Name:</label>
+            <select id="building_name_src" onchange="updateBuildingdoor_src()">
+                <option value="" disabled selected>Select Building</option>
+                    {% for building in building_name %}#}
+                        <option value="{{ building }}">{{ building }}</option>#}
             {% endfor %}#}
-        </select>
+            </select>
+            <label for="door_name_src">Door</label>
+            <select id="door_name_src">
+                <option value="">Select door</option>
+            </select>
+        </div>
 
-        <label for="door_name">Door</label>
-        <select id="door_name">
-            <option value="">Select door</option>
-        </select>
+        <div id="ending_location">
+            <p>Destination</p>
+            <label for="building_name_dist">Building Name:</label>
+            <select id="building_name_dist" onchange="updateBuildingdoor_dist()">
+                <option value="" disabled selected>Select Building</option>
+                    {% for building in building_name %}#}
+                        <option value="{{ building }}">{{ building }}</option>#}
+            {% endfor %}#}
+            </select>
+            <label for="door_name_dist">Door</label>
+            <select id="door_name_dist">
+                <option value="">Select door</option>
+            </select>
+        </div>
+
         <button type="submit">Search</button>
     </form>
     <h5><small>Testing</small></h5>
