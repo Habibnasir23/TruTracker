@@ -28,6 +28,7 @@ def transfer_data_from_file_to_database():
             data_list = line.strip().split(',')
             Building_name = data_list[0]
             Building_door = data_list[1]
+            Building_door = Building_door.lstrip()
             Latitude = float(data_list[2])
             Longitude = float(data_list[3])
             this_location = Locations(Building_name, Building_door, Latitude, Longitude)
@@ -148,14 +149,21 @@ def add_saved_location(username, buildname, savedname):
     db.session.commit()
 
 
-def get_lat(name):
-    this_location = Locations.query.filter_by(building_name=name).first()
-    return this_location.building_latitude
+def get_lat(name, door):
+    loc = Locations.query.filter_by(building_name = name, building_door = door).first()
+    if loc:
+        return loc.building_latitude
+    else:
+        return None
 
 
-def get_long(name):
-    this_location = Locations.query.filter_by(building_name=name).first()
-    return this_location.building_longitude
+
+def get_long(name, door):
+    loc = Locations.query.filter_by(building_name=name, building_door=door).first()
+    if loc:
+        return loc.building_longitude
+    else:
+        return None
 
 
 def verify_user(useremail, userpswd):
@@ -208,9 +216,9 @@ verify_pswd("tru123")
 # verify_email("hvhb@gmail.com")
 verify_pswd("sadwa")
 
-this_lat = (get_lat("West Campus Suites"))
+this_lat = (get_lat("Ryle Hall", "Southwest"))
 print(this_lat)
-this_long = (get_long("West Campus Suites"))
+this_long = (get_long("West Campus Suites", "Southeast"))
 print(this_long)
 
 
