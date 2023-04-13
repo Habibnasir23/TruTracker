@@ -27,7 +27,7 @@ def transfer_data_from_file_to_database():
         for line in file:
             data_list = line.strip().split(',')
             Building_name = data_list[0]
-            Building_door = data_list[1]
+            Building_door = data_list[1].lstrip()
             Latitude = float(data_list[2])
             Longitude = float(data_list[3])
             this_location = Locations(Building_name, Building_door, Latitude, Longitude)
@@ -184,9 +184,9 @@ def verify_pswd(password):
         return False
 
 
-def get_directions_response():
+def get_directions_response(lat_src,long_src,lat_dist,long_dist):
     url = "https://route-and-directions.p.rapidapi.com/v1/routing"
-    querystring = {"waypoints": "40.185740,-92.579699|40.188218,-92.581422", "mode": "walk"}
+    querystring = {"waypoints":f"{str(lat_src)},{str(long_src)}|{str(lat_dist)},{str(long_dist)}","mode":"walk"}
     headers = {
         "X-RapidAPI-Key": "e59c5e2a48mshe929e8c6509ac15p188c6cjsnd26c2ced7900",
         "X-RapidAPI-Host": "route-and-directions.p.rapidapi.com"
@@ -222,10 +222,20 @@ def index():
     return render_template('loginScreen.html')
 
 
-@app.route("/home")
+@app.route("/home", methods=["POST","GET"])
 def home():
     building_dict = {}
     populate_drop_down_menu(building_dict)
+    if request.method == "POST":
+        building_name_src = request.form.get("building_name_src")
+        door_name_src = request.form.get("door_name_src")
+
+        building_name_dist = request.form.get("building_name_dist")
+        door_name_dist = request.form.get("door_name_dist")
+
+        print(building_name_dist,door_name_dist)
+        return redirect("/map")
+
     return render_template('homeScreen.html', building_name=building_dict.keys(), building_dict=building_dict)
 
 
@@ -268,7 +278,7 @@ def signUp():
 def homeMap():
     """Simple example of a fullscreen map."""
 
-    response = get_directions_response()
+    response = get_directions_response("40.18206601897366","-92.57801895262784","40.18516234602028","-92.57947314536754")
     mls = response.json()['features'][0]['geometry']['coordinates']
     points = [(i[1], i[0]) for i in mls[0]]
 
