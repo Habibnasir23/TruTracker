@@ -81,15 +81,15 @@ class Locations(db.Model):
 
 
 class Saved_Locations(db.Model):
-    user_name = db.Column(db.String(100), primary_key=True)
+    user_email = db.Column(db.String(100), primary_key=True)
     saved_name = db.Column(db.String(100))
     building_name = db.Column(db.String(100))
     door_name = db.Column(db.String(100))
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
 
-    def __init__(self, username, savedname, buildname, doorname, lat, long):
-        self.user_name = username
+    def __init__(self, useremail, savedname, buildname, doorname, lat, long):
+        self.user_email = useremail
         self.saved_name = savedname
         self.building_name = buildname
         self.door_name = doorname
@@ -141,11 +141,11 @@ def add_user2(u_name, u_email, u_password):
     db.session.commit()
 
 
-def add_saved_location(username, buildname, savedname):
-    this_lat = get_lat(buildname)
-    this_long = get_long(buildname)
-    demo1 = Saved_Locations(username, savedname, buildname, this_lat, this_long)
-    db.session.add(demo1)
+def add_saved_location(email, buildname, buildoor, savedname):
+    this_lat = get_lat(buildname, buildoor)
+    this_long = get_long(buildname, buildoor)
+    saveLoc = Saved_Locations(email, savedname, buildname, this_lat, this_long)
+    db.session.add(saveLoc)
     db.session.commit()
 
 
@@ -224,10 +224,10 @@ print(this_long)
 
 @app.route("/")
 def index():
-    # if not session.get("name"):
-     #   return redirect("/login")
-    # return render_template('index.html')
-    return render_template('loginScreen.html')
+    if not session.get("name"):
+       return redirect("/login")
+    return render_template('index.html')
+    #return render_template('loginScreen.html')
 
 
 @app.route("/home", methods=["POST","GET"])
