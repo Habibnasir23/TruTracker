@@ -1,31 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-wdith, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Document</title>
-        <link rel="stylesheet" href={{ url_for('static', filename='css/homeStyles.css') }}>
-    </head>
-    <body>
-        <div class="Menu">
-            <button class="dropbtn">Menu</button>
-            <div class="Menu-content">
-                <a href="#">Saved Locations</a>
-                <a href="#">Help</a>
-                <a href="#">FAQ</a>
-            </div>
-        </div> 
-        <div class="container">
-            <h1>TruTracker</h1>
-            <form action="/search" method="get">
-                <input type="text" name="q" placeholder="Where would you like to go?">
-                <button type="submit">Search</button>
-              </form>
-            <h5><small>Testing</small> </h5>
-        </div>
-        <div class="content">
-            {% block content %} {% endblock %}
-        </div>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-wdith, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href={{ url_for('static', filename='css/homeStyles.css') }}>
+
+    <script>
+    let building_dict = {{ building_dict|tojson }};
+    function updateBuildingdoor() {
+        const building_name_js = document.getElementById('building_name').value;
+        const door_name_js = document.getElementById('door_name');
+        door_name_js.innerHTML = ''; // Clear previous options
+        const door_value = building_dict[building_name_js];
+        if (door_value) {
+            for (let i = 0; i < door_value.length; i++) {
+                const option = document.createElement('option');
+                option.text = door_value[i];
+                option.value = door_value[i];
+                door_name_js.add(option);
+            }
+        }
+    }
+</script>
+</head>
+<body>
+<div class="Menu">
+    <button class="dropbtn">Menu</button>
+    <div class="Menu-content">
+        <a href="#">Saved Locations</a>
+        <a href="#">Help</a>
+        <a href="#">FAQ</a>
+    </div>
+</div>
+<div class="container">
+    <h1>TruTracker</h1>
+    <form action="/search" method="get">
+        <label for="building_name">Building Name:</label>
+        <select id="building_name" onchange="updateBuildingdoor()">
+            <option value="" disabled selected>Select Building</option>
+            {% for building in building_name %}#}
+                <option value="{{ building }}">{{ building }}</option>#}
+            {% endfor %}#}
+        </select>
+
+        <label for="door_name">Door</label>
+        <select id="door_name">
+            <option value="">Select door</option>
+        </select>
+        <button type="submit">Search</button>
+    </form>
+    <h5><small>Testing</small></h5>
+</div>
+</body>
 </html>
