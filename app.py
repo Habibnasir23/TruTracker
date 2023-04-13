@@ -34,6 +34,7 @@ def transfer_data_from_file_to_database():
             db.session.add(this_location)
             db.session.commit()
 
+
 def populate_drop_down_menu(buidling_dict):
     with open("Entrances.txt") as file:
         for line in file:
@@ -42,6 +43,7 @@ def populate_drop_down_menu(buidling_dict):
                 buidling_dict[data_list[0]].append(data_list[1])
             else:
                 buidling_dict[data_list[0]] = [data_list[1]]
+
 
 def create_app():
     app1 = Flask(__name__, template_folder='templates', static_folder='static')
@@ -156,13 +158,19 @@ def get_long(name):
     return this_location.building_longitude
 
 
-def verify_email(useremail):
-    exists = db.session.query(db.exists().where(User.user_email == useremail)).scalar()
-    if exists:
-        print("this username is valid")
+def verify_user(useremail, userpswd):
+    email_exists = db.session.query(db.exists().where(User.user_email == useremail)).scalar()
+    if email_exists:
+        print("this email is valid")
+        user = User.query.filter_by(user_email=useremail).first()
+        pswd = user.user_pswd
+        if pswd != userpswd:
+            print("the password does not match the username")
+            return False
+        print("the password matches the username")
         return True
     else:
-        print("this username is not valid")
+        print("this email is not valid")
         return False
 
 
@@ -195,9 +203,9 @@ transfer_data_from_file_to_database()
 add_buildings()
 add_ryle_data()
 add_user()
-verify_email("habibnasir23@gmail.com")
+# verify_email("habibnasir23@gmail.com")
 verify_pswd("tru123")
-verify_email("hvhb@gmail.com")
+# verify_email("hvhb@gmail.com")
 verify_pswd("sadwa")
 
 this_lat = (get_lat("West Campus Suites"))
@@ -205,18 +213,21 @@ print(this_lat)
 this_long = (get_long("West Campus Suites"))
 print(this_long)
 
+
 @app.route("/")
 def index():
-    #if not session.get("name"):
+    # if not session.get("name"):
      #   return redirect("/login")
-    #return render_template('index.html')
+    # return render_template('index.html')
     return render_template('loginScreen.html')
+
 
 @app.route("/home")
 def home():
     building_dict = {}
     populate_drop_down_menu(building_dict)
-    return render_template('homeScreen.html', building_name = building_dict.keys(), building_dict =building_dict)
+    return render_template('homeScreen.html', building_name=building_dict.keys(), building_dict=building_dict)
+
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
@@ -225,7 +236,7 @@ def login():
         session["email"] = email
         password = request.form.get("password")
         session['password'] = password
-        if (verify_email(email) and verify_pswd(password)):
+        if verify_user(email, password):
             return redirect("/map")
         else:
             return render_template("loginScreen.html")
