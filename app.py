@@ -218,6 +218,7 @@ def login():
             return render_template("loginScreen.html")
     return render_template("loginScreen.html")
 
+
 @app.route("/logout")
 def logout():
     session["name"] = None
