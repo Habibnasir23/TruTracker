@@ -270,8 +270,13 @@ def homeMap():
     sw = df[['Lat', 'Lon']].min().values.tolist()
     ne = df[['Lat', 'Lon']].max().values.tolist()
     m.fit_bounds([sw, ne])
+    m.get_root().width = "800px"
+    m.get_root().height = "600px"
+    iframe = m.get_root()._repr_html_()
 
-    return m.get_root().render()
+
+    m.save('templates/map.html')
+    return render_template('map.html', iframe=iframe)
 
 
 @app.route("/test")
