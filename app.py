@@ -27,7 +27,8 @@ def transfer_data_from_file_to_database():
         for line in file:
             data_list = line.strip().split(',')
             Building_name = data_list[0]
-            Building_door = data_list[1].lstrip()
+            Building_door = data_list[1]
+            Building_door = Building_door.lstrip()
             Latitude = float(data_list[2])
             Longitude = float(data_list[3])
             this_location = Locations(Building_name, Building_door, Latitude, Longitude)
@@ -148,14 +149,21 @@ def add_saved_location(username, buildname, savedname):
     db.session.commit()
 
 
-def get_lat(name):
-    this_location = Locations.query.filter_by(building_name=name).first()
-    return this_location.building_latitude
+def get_lat(name, door):
+    loc = Locations.query.filter_by(building_name = name, building_door = door).first()
+    if loc:
+        return loc.building_latitude
+    else:
+        return None
 
 
-def get_long(name):
-    this_location = Locations.query.filter_by(building_name=name).first()
-    return this_location.building_longitude
+
+def get_long(name, door):
+    loc = Locations.query.filter_by(building_name=name, building_door=door).first()
+    if loc:
+        return loc.building_longitude
+    else:
+        return None
 
 
 def verify_user(useremail, userpswd):
@@ -208,9 +216,9 @@ verify_pswd("tru123")
 # verify_email("hvhb@gmail.com")
 verify_pswd("sadwa")
 
-this_lat = (get_lat("West Campus Suites"))
+this_lat = (get_lat("Ryle Hall", "Southwest"))
 print(this_lat)
-this_long = (get_long("West Campus Suites"))
+this_long = (get_long("West Campus Suites", "Southeast"))
 print(this_long)
 
 
@@ -292,8 +300,13 @@ def homeMap():
     sw = df[['Lat', 'Lon']].min().values.tolist()
     ne = df[['Lat', 'Lon']].max().values.tolist()
     m.fit_bounds([sw, ne])
+    m.get_root().width = "800px"
+    m.get_root().height = "600px"
+    iframe = m.get_root()._repr_html_()
 
-    return m.get_root().render()
+
+    m.save('templates/map.html')
+    return render_template('map.html', iframe=iframe)
 
 
 @app.route("/test")
