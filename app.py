@@ -257,7 +257,7 @@ def login():
         password = request.form.get("password")
         session['password'] = password
         if verify_user(email, password):
-            return redirect("/map")
+            return redirect("/home")
         else:
             return render_template("loginScreen.html")
     return render_template("loginScreen.html")
