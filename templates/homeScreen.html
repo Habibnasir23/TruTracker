@@ -66,7 +66,7 @@
     <h1>TruTracker</h1>
     <form action="#" method="post">
         <div id="starting_location">
-            <p>Source</p>
+            <p>Where from?</p>
             <label for="building_name_src">Building Name:</label>
             <select name="building_name_src" id="building_name_src" onchange="updateBuildingdoor_src()">
                 <option value="" disabled selected>Select Building</option>
@@ -76,12 +76,12 @@
             </select>
             <label for="door_name_src">Door</label>
             <select name= "door_name_src" select = "door_name_src" id="door_name_src">
-                <option value="">Select door</option>
+                <option value="">Select Door</option>
             </select>
         </div>
 
         <div id="ending_location">
-            <p>Destination</p>
+            <p>Where to?</p>
             <label for="building_name_dist">Building Name:</label>
             <select name="building_name_dist" id="building_name_dist" onchange="updateBuildingdoor_dist()">
                 <option value="" disabled selected>Select Building</option>
@@ -91,13 +91,12 @@
             </select>
             <label for="door_name_dist">Door</label>
             <select name="door_name_dist" id="door_name_dist">
-                <option value="">Select door</option>
+                <option value="">Select Door</option>
             </select>
         </div>
         <button id="add_fav" type="button" onclick="fav_destination_to_backend()">Add Favorite</button>
         <button type="submit" name="submit_search">Search</button>
     </form>
-    <h5><small>Testing</small></h5>
 </div>
 </body>
 </html>

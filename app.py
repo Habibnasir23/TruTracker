@@ -81,20 +81,21 @@ class Locations(db.Model):
 
 
 class Saved_Locations(db.Model):
-    user_name = db.Column(db.String(100), primary_key=True)
-    saved_name = db.Column(db.String(100))
+    user_email = db.Column(db.String(100), primary_key=True) # a combination of primary keys
+    saved_name = db.Column(db.String(100), primary_key=True)
     building_name = db.Column(db.String(100))
     door_name = db.Column(db.String(100))
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
+    #__table_args__ = (db.UniqueConstraint('user_email', 'saved_name', name='unique_saved_location'),)
 
-    def __init__(self, username, savedname, buildname, doorname, lat, long):
-        self.user_name = username
+    def __init__(self, useremail, savedname, buildname, doorname, lat, long):
+        self.user_email = useremail
         self.saved_name = savedname
         self.building_name = buildname
         self.door_name = doorname
-        self.building_latitude = lat
-        self.building_longitude = long
+        self.latitude = lat
+        self.longitude = long
 
 
 class Ryle_Hall(db.Model):
@@ -141,21 +142,37 @@ def add_user2(u_name, u_email, u_password):
     db.session.commit()
 
 
-def add_saved_location(username, buildname, savedname):
-    this_lat = get_lat(buildname)
-    this_long = get_long(buildname)
-    demo1 = Saved_Locations(username, savedname, buildname, this_lat, this_long)
-    db.session.add(demo1)
+def add_saved_location(email, buildname, buildoor, savedname):
+    this_lat = get_lat(buildname, buildoor)
+    this_long = get_long(buildname, buildoor)
+    saveLoc = Saved_Locations(email, savedname, buildname, buildoor, this_lat, this_long)
+    db.session.add(saveLoc)
     db.session.commit()
 
 
+def get_saved_locations(email, savedname):
+    loc_details = {}
+    loc = Saved_Locations.query.filter_by(user_email=email, saved_name=savedname).first()
+    if loc is not None:
+        loc_details[loc.building_name] = loc.door_name
+    else:
+        loc_details = None
+    return loc_details
+
+
+def get_all_saved_locations(email):
+    loc_details = {}
+    locs = Saved_Locations.query.filter_by(user_email=email).all()
+    for loc in locs:
+        loc_details[loc.saved_name] = {'building_name': loc.building_name, 'door_name':loc.door_name}
+    return loc_details
+
 def get_lat(name, door):
-    loc = Locations.query.filter_by(building_name = name, building_door = door).first()
+    loc = Locations.query.filter_by(building_name=name, building_door=door).first()
     if loc:
         return loc.building_latitude
     else:
         return None
-
 
 
 def get_long(name, door):
@@ -220,14 +237,19 @@ this_lat = (get_lat("Ryle Hall", "Southwest"))
 print(this_lat)
 this_long = (get_long("West Campus Suites", "Southeast"))
 print(this_long)
-
+add_saved_location("habibnasir23@gmail.com", "Ryle Hall", "Southwest", "Home")
+add_saved_location("habibnasir23@gmail.com", "Ryle Hall", "West", "Work")
+this_loc = get_saved_locations("habibnasir23@gmail.com", "Home")
+print(this_loc)
+all_saved_locs = get_all_saved_locations("habibnasir23@gmail.com")
+print(all_saved_locs)
 
 @app.route("/")
 def index():
-    # if not session.get("name"):
-     #   return redirect("/login")
-    # return render_template('index.html')
-    return render_template('loginScreen.html')
+    if not session.get("name"):
+       return redirect("/login")
+    return render_template('index.html')
+    #return render_template('loginScreen.html')
 
 
 @app.route("/home", methods=["POST","GET"])
@@ -312,6 +334,61 @@ def homeMap(lat_src,long_src,lat_dist,long_dist):
     m.get_root().height = "600px"
     iframe = m.get_root()._repr_html_()
 
+    m.get_root().html.add_child(folium.Element("""
+    <div style="position: fixed; 
+     top: 50px; left: 70px; width: 163px; height: 100px;
+     background-color:white; border-radius: 5px; border:2px solid grey;z-index: 900;">
+    <h5>Route new destination<h5>
+    <button class="button-9" role="button">Back</button>
+
+<style>
+.button-9 {
+  appearance: button;
+  backface-visibility: hidden;
+  background-color: #405cf5;
+  border-radius: 6px;
+  border-width: 0;
+  box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset,rgba(50, 50, 93, .1) 0 2px 5px 0,rgba(0, 0, 0, .07) 0 1px 1px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  font-family: -apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif;
+  font-size: 100%;
+  height: 44px;
+  line-height: 1.15;
+  outline: none;
+  overflow: hidden;
+  padding: 0 25px;
+  position: absolute;
+  text-align: center;
+  text-transform: none;
+  transform: translateZ(0);
+  transition: all .2s,box-shadow .08s ease-in;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: 50%;
+  margin-left: 10px;
+}
+
+.button-9:hover{
+  background: #2c52ed;
+}
+
+.button-9:disabled {
+  cursor: default;
+}
+
+.button-9:focus {
+  box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset, rgba(50, 50, 93, .2) 0 6px 15px 0, rgba(0, 0, 0, .1) 0 2px 2px 0, rgba(50, 151, 211, .3) 0 0 0 4px;
+}
+5{
+margin-left: 5px;
+text-align: center;
+}
+</style>
+    </div>
+    """))
 
     m.save('templates/map.html')
     return render_template('map.html', iframe=iframe)
