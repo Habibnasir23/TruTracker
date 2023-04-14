@@ -81,12 +81,13 @@ class Locations(db.Model):
 
 
 class Saved_Locations(db.Model):
-    user_email = db.Column(db.String(100), primary_key=True)
-    saved_name = db.Column(db.String(100))
+    user_email = db.Column(db.String(100), primary_key=True) # a combination of primary keys
+    saved_name = db.Column(db.String(100), primary_key=True)
     building_name = db.Column(db.String(100))
     door_name = db.Column(db.String(100))
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
+    #__table_args__ = (db.UniqueConstraint('user_email', 'saved_name', name='unique_saved_location'),)
 
     def __init__(self, useremail, savedname, buildname, doorname, lat, long):
         self.user_email = useremail
@@ -159,6 +160,13 @@ def get_saved_locations(email, savedname):
     return loc_details
 
 
+def get_all_saved_locations(email):
+    loc_details = {}
+    locs = Saved_Locations.query.filter_by(user_email=email).all()
+    for loc in locs:
+        loc_details[loc.saved_name] = {'building_name': loc.building_name, 'door_name':loc.door_name}
+    return loc_details
+
 def get_lat(name, door):
     loc = Locations.query.filter_by(building_name=name, building_door=door).first()
     if loc:
@@ -230,8 +238,11 @@ print(this_lat)
 this_long = (get_long("West Campus Suites", "Southeast"))
 print(this_long)
 add_saved_location("habibnasir23@gmail.com", "Ryle Hall", "Southwest", "Home")
+add_saved_location("habibnasir23@gmail.com", "Ryle Hall", "West", "Work")
 this_loc = get_saved_locations("habibnasir23@gmail.com", "Home")
 print(this_loc)
+all_saved_locs = get_all_saved_locations("habibnasir23@gmail.com")
+print(all_saved_locs)
 
 @app.route("/")
 def index():
