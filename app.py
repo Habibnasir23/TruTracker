@@ -93,8 +93,8 @@ class Saved_Locations(db.Model):
         self.saved_name = savedname
         self.building_name = buildname
         self.door_name = doorname
-        self.building_latitude = lat
-        self.building_longitude = long
+        self.latitude = lat
+        self.longitude = long
 
 
 class Ryle_Hall(db.Model):
@@ -144,18 +144,27 @@ def add_user2(u_name, u_email, u_password):
 def add_saved_location(email, buildname, buildoor, savedname):
     this_lat = get_lat(buildname, buildoor)
     this_long = get_long(buildname, buildoor)
-    saveLoc = Saved_Locations(email, savedname, buildname, this_lat, this_long)
+    saveLoc = Saved_Locations(email, savedname, buildname, buildoor, this_lat, this_long)
     db.session.add(saveLoc)
     db.session.commit()
 
 
+def get_saved_locations(email, savedname):
+    loc_details = {}
+    loc = Saved_Locations.query.filter_by(user_email=email, saved_name=savedname).first()
+    if loc is not None:
+        loc_details[loc.building_name] = loc.door_name
+    else:
+        loc_details = None
+    return loc_details
+
+
 def get_lat(name, door):
-    loc = Locations.query.filter_by(building_name = name, building_door = door).first()
+    loc = Locations.query.filter_by(building_name=name, building_door=door).first()
     if loc:
         return loc.building_latitude
     else:
         return None
-
 
 
 def get_long(name, door):
@@ -220,7 +229,9 @@ this_lat = (get_lat("Ryle Hall", "Southwest"))
 print(this_lat)
 this_long = (get_long("West Campus Suites", "Southeast"))
 print(this_long)
-
+add_saved_location("habibnasir23@gmail.com", "Ryle Hall", "Southwest", "Home")
+this_loc = get_saved_locations("habibnasir23@gmail.com", "Home")
+print(this_loc)
 
 @app.route("/")
 def index():
