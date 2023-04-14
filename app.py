@@ -311,7 +311,13 @@ def homeMap(lat_src,long_src,lat_dist,long_dist):
      top: 50px; left: 70px; width: 163px; height: 100px;
      background-color:white; border-radius: 5px; border:2px solid grey;z-index: 900;">
     <h5>Route new destination<h5>
-    <button class="button-9" role="button">Back</button>
+    <button class="button-9" onclick="goBack()" role="button">Back</button>
+
+    <script>
+    function goBack(){
+        window.history.back();
+    }
+    </script>
 
 <style>
 .button-9 {
