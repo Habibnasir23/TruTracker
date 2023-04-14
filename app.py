@@ -81,20 +81,21 @@ class Locations(db.Model):
 
 
 class Saved_Locations(db.Model):
-    user_name = db.Column(db.String(100), primary_key=True)
-    saved_name = db.Column(db.String(100))
+    user_email = db.Column(db.String(100), primary_key=True) # a combination of primary keys
+    saved_name = db.Column(db.String(100), primary_key=True)
     building_name = db.Column(db.String(100))
     door_name = db.Column(db.String(100))
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
+    #__table_args__ = (db.UniqueConstraint('user_email', 'saved_name', name='unique_saved_location'),)
 
-    def __init__(self, username, savedname, buildname, doorname, lat, long):
-        self.user_name = username
+    def __init__(self, useremail, savedname, buildname, doorname, lat, long):
+        self.user_email = useremail
         self.saved_name = savedname
         self.building_name = buildname
         self.door_name = doorname
-        self.building_latitude = lat
-        self.building_longitude = long
+        self.latitude = lat
+        self.longitude = long
 
 
 class Ryle_Hall(db.Model):
@@ -141,21 +142,37 @@ def add_user2(u_name, u_email, u_password):
     db.session.commit()
 
 
-def add_saved_location(username, buildname, savedname):
-    this_lat = get_lat(buildname)
-    this_long = get_long(buildname)
-    demo1 = Saved_Locations(username, savedname, buildname, this_lat, this_long)
-    db.session.add(demo1)
+def add_saved_location(email, buildname, buildoor, savedname):
+    this_lat = get_lat(buildname, buildoor)
+    this_long = get_long(buildname, buildoor)
+    saveLoc = Saved_Locations(email, savedname, buildname, buildoor, this_lat, this_long)
+    db.session.add(saveLoc)
     db.session.commit()
 
 
+def get_saved_locations(email, savedname):
+    loc_details = {}
+    loc = Saved_Locations.query.filter_by(user_email=email, saved_name=savedname).first()
+    if loc is not None:
+        loc_details[loc.building_name] = loc.door_name
+    else:
+        loc_details = None
+    return loc_details
+
+
+def get_all_saved_locations(email):
+    loc_details = {}
+    locs = Saved_Locations.query.filter_by(user_email=email).all()
+    for loc in locs:
+        loc_details[loc.saved_name] = {'building_name': loc.building_name, 'door_name':loc.door_name}
+    return loc_details
+
 def get_lat(name, door):
-    loc = Locations.query.filter_by(building_name = name, building_door = door).first()
+    loc = Locations.query.filter_by(building_name=name, building_door=door).first()
     if loc:
         return loc.building_latitude
     else:
         return None
-
 
 
 def get_long(name, door):
@@ -220,14 +237,19 @@ this_lat = (get_lat("Ryle Hall", "Southwest"))
 print(this_lat)
 this_long = (get_long("West Campus Suites", "Southeast"))
 print(this_long)
-
+add_saved_location("habibnasir23@gmail.com", "Ryle Hall", "Southwest", "Home")
+add_saved_location("habibnasir23@gmail.com", "Ryle Hall", "West", "Work")
+this_loc = get_saved_locations("habibnasir23@gmail.com", "Home")
+print(this_loc)
+all_saved_locs = get_all_saved_locations("habibnasir23@gmail.com")
+print(all_saved_locs)
 
 @app.route("/")
 def index():
-    # if not session.get("name"):
-     #   return redirect("/login")
-    # return render_template('index.html')
-    return render_template('loginScreen.html')
+    if not session.get("name"):
+       return redirect("/login")
+    return render_template('index.html')
+    #return render_template('loginScreen.html')
 
 
 @app.route("/home", methods=["POST","GET"])
