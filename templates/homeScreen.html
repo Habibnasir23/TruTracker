@@ -54,7 +54,8 @@
 </script>
 </head>
 <body>
-<div class="Menu">
+  <div id="bg"></div>
+    <div class="Menu">
     <button class="dropbtn">Menu</button>
     <div class="Menu-content">
         <div class="dropdown-submenu">
@@ -103,8 +104,10 @@
                 <option value="">Select Door</option>
             </select>
         </div>
-        <button id="add_fav" type="button" onclick="fav_destination_to_backend()">Add Favorite</button>
-        <button type="submit" name="submit_search">Search</button>
+        <div class="btn-group">
+            <button id="search" type="submit" name="submit_search">Search</button>
+            <button id="add_fav" type="button" onclick="fav_destination_to_backend()">Add Favorite</button>
+         </div>
     </form>
 </div>
 </body>
