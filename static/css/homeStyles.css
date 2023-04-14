@@ -74,6 +74,36 @@ body {
     display: block;
   }
   
+  /*Saved locations drop down*/
+  /* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Style the submenu */
+.dropdown-submenu {
+  position: relative;
+}
+
+/* Style the submenu content (hidden by default) */
+.dropdown-submenu-content {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 100%;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Show the submenu content on hover */
+.dropdown-submenu:hover .dropdown-submenu-content {
+  display: block;
+}
+
+/*end submenu code*/
+
   .container {
     margin: 2rem auto;
     max-width: 800px;
