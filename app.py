@@ -274,7 +274,8 @@ def home():
 def process_saved_data():
     fav_building_name = request.form.get("fav_buidling_name")
     fav_door_name = request.form.get("fav_door_name")
-    print(f"The buidling value is {fav_building_name} and {fav_door_name}")
+    fav_email = session['email']
+    add_saved_location(fav_email,fav_building_name,fav_door_name,"Yourmom")
     return jsonify({"Favorite Location has been Submitted": "Data received!"})
 
 @app.route("/login", methods=["POST", "GET"])
