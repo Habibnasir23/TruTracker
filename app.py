@@ -8,7 +8,7 @@
     And then head to http://127.0.0.1:5000/ in your browser to see the map displayed
 """
 
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 
 import folium
 import requests
@@ -248,6 +248,12 @@ def home():
 
     return render_template('homeScreen.html', building_name=building_dict.keys(), building_dict=building_dict)
 
+@app.route("/process_saved_data", methods=["POST"])
+def process_saved_data():
+    fav_building_name = request.form.get("fav_buidling_name")
+    fav_door_name = request.form.get("fav_door_name")
+    print(f"The buidling value is {fav_building_name} and {fav_door_name}")
+    return jsonify({"Favorite Location has been Submitted": "Data received!"})
 
 @app.route("/login", methods=["POST", "GET"])
 def login():

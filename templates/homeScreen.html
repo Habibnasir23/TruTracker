@@ -38,6 +38,19 @@
             }
         }
     }
+    function fav_destination_to_backend() {
+    var fav_buidling_name = document.getElementById("building_name_dist").value;
+    var fav_door_name = document.getElementById("door_name_dist").value;
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/process_saved_data", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            alert(xhr.responseText);
+        }
+    };
+    xhr.send("fav_buidling_name=" + fav_buidling_name + "&fav_door_name="+ fav_door_name );
+    }
 </script>
 </head>
 <body>
@@ -81,8 +94,8 @@
                 <option value="">Select door</option>
             </select>
         </div>
-
-        <button type="submit">Search</button>
+        <button id="add_fav" type="button" onclick="fav_destination_to_backend()">Add Favorite</button>
+        <button type="submit" name="submit_search">Search</button>
     </form>
     <h5><small>Testing</small></h5>
 </div>
