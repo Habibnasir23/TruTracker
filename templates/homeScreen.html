@@ -80,7 +80,7 @@
             <label for="building_name_src">Building Name:</label>
             <select name="building_name_src" id="building_name_src" onchange="updateBuildingdoor_src()">
                 <option value="" disabled selected>Select Building</option>
-                    {% for building in building_name %}#}
+                    {% for building in building_name|sort %}#}
                         <option value="{{ building }}">{{ building }}</option>#}
             {% endfor %}#}
             </select>
@@ -95,7 +95,7 @@
             <label for="building_name_dist">Building Name:</label>
             <select name="building_name_dist" id="building_name_dist" onchange="updateBuildingdoor_dist()">
                 <option value="" disabled selected>Select Building</option>
-                    {% for building in building_name %}#}
+                    {% for building in building_name|sort %}#}
                         <option value="{{ building }}">{{ building }}</option>#}
             {% endfor %}#}
             </select>

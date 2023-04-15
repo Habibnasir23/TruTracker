@@ -13,6 +13,7 @@ from flask import Flask, render_template, jsonify
 import folium
 import requests
 import pandas as pd
+version = 1
 
 from flask import Flask, request, render_template, session, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
@@ -397,8 +398,11 @@ text-align: center;
     </div>
     """))
 
-    m.save('templates/map.html')
-    return render_template('map.html', iframe=iframe)
+    global version
+    version += 1
+
+    m.save(f'templates/map.html?v={version}')
+    return render_template(f'map.html?v={version}', iframe=iframe)
 
 
 @app.route("/test")
