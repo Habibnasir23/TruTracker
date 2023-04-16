@@ -61,12 +61,40 @@
                         ul.empty();
                         $.each(data, function(key, value) {
                             console.log(value)
-                            ul.append('<button id="saved_fav_button" value="' + key + '">' + key + '</button>');
+                            ul.append('<button id="saved_fav_button" value="' + key + '" onclick="modify_dest()">' + key + '</button>');
                         });
                     }
                 });
             });
         });
+
+    function modify_dest() {
+        $(document).ready(function(){
+            $.ajax({
+                    url: '/api/dictionary',
+                    type: 'GET',
+                    success: function(data) {
+                        var select_buidling = $('#building_name_dist');
+                        var select_door = $('#door_name_dist');
+                        select_buidling.empty();
+                        select_door.empty();
+                        $.each(data, function(key, value) {
+                            const option1 = document.createElement('option');
+                            const option2 = document.createElement('option');
+                            option1.text = value['building_name'];
+                            alert(value['building_name'])
+                            option1.value =  value['building_name'];
+
+                            option2.text =  value['door_name'];
+                            option2.value = value['door_name'];
+
+                            select_buidling.append(option1)
+                            select_door.append(option2)
+                        });
+                    }
+                });
+        })
+    }
 </script>
 </head>
 <body>
@@ -118,7 +146,7 @@
         </div>
         <div class="btn-group">
             <button id="search" type="submit" name="submit_search">Search</button>
-            <button id="add_fav" type="button" onclick="fav_destination_to_backend();">Add Favorite</button>
+            <button id="add_fav" type="button" onclick="fav_destination_to_backend()">Add Favorite</button>
          </div>
     </form>
 </div>
