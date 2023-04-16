@@ -279,8 +279,15 @@ def process_saved_data():
     add_saved_location(fav_email,fav_building_name,fav_door_name,"Yourmom")
     return jsonify({"Favorite Location has been Submitted": "Data received!"})
 
+@app.route('/api/dictionary')
+def get_dictionary():
+    fav_email = session['email']
+    dictionary = get_all_saved_locations(fav_email)
+    return jsonify(dictionary)
+
 @app.route("/login", methods=["POST", "GET"])
 def login():
+    session.permanent = True
     if request.method == "POST":
         email = request.form.get("email")
         session["email"] = email

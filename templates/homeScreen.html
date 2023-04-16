@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href={{ url_for('static', filename='css/homeStyles.css') }}>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
     let building_dict = {{ building_dict|tojson }};
     function updateBuildingdoor_src() {
@@ -51,6 +51,22 @@
     };
     xhr.send("fav_buidling_name=" + fav_buidling_name + "&fav_door_name="+ fav_door_name );
     }
+    $(document).ready(function() {
+            $('#add_fav').click(function() {
+                $.ajax({
+                    url: '/api/dictionary',
+                    type: 'GET',
+                    success: function(data) {
+                        var ul = $('#dictionary-keys');
+                        ul.empty();
+                        $.each(data, function(key, value) {
+                            console.log(value)
+                            ul.append('<button id="saved_fav_button" value="' + key + '">' + key + '</button>');
+                        });
+                    }
+                });
+            });
+        });
 </script>
 </head>
 <body>
@@ -58,14 +74,10 @@
     <div class="Menu">
     <button class="dropbtn">Menu</button>
     <div class="Menu-content">
-        <div class="dropdown-submenu">
+        <div id="dropdown-submenu">
             <a href="#">Saved Locations</a>
-            <div class="dropdown-submenu-content">
-                <a href="#">Sublink 1</a>
-                <a href="#">Sublink 2</a>
-                <a href="#">Sublink 3</a>
-                <a href="#">Sublink 4</a>
-                <a href="#">Sublink 5</a>
+            <div id="dictionary-keys">
+
             </div>
         </div>
         <a href="#">Help</a>
@@ -106,7 +118,7 @@
         </div>
         <div class="btn-group">
             <button id="search" type="submit" name="submit_search">Search</button>
-            <button id="add_fav" type="button" onclick="fav_destination_to_backend()">Add Favorite</button>
+            <button id="add_fav" type="button" onclick="fav_destination_to_backend();">Add Favorite</button>
          </div>
     </form>
 </div>
