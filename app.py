@@ -249,8 +249,7 @@ print(all_saved_locs)
 def index():
     if not session.get("name"):
        return redirect("/login")
-    return render_template('index.html')
-    #return render_template('loginScreen.html')
+    return render_template('loginScreen.html')
 
 
 @app.route("/home", methods=["POST","GET"])
