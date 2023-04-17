@@ -407,8 +407,8 @@ text-align: center;
     global version
     version += 1
 
-    m.save(f'templates/map.html?v={version}')
-    return render_template(f'map.html?v={version}', iframe=iframe)
+    m.save('templates/map' + str(version) +'.html')
+    return render_template('map' + str(version) +'.html', iframe=iframe)
 
 
 @app.route("/test")
