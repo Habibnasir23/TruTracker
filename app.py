@@ -351,7 +351,7 @@ def homeMap(lat_src,long_src,lat_dist,long_dist):
 
     <script>
     function goBack(){
-        window.history.back();
+        window.location.href = "/home"
     }
     </script>
 

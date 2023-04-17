@@ -57,6 +57,8 @@
                     url: '/api/dictionary',
                     type: 'GET',
                     success: function(data) {
+                        // Save the data to local storage
+                        sessionStorage.setItem('dictionaryData', JSON.stringify(data));
                         var ul = $('#dictionary-keys');
                         ul.empty();
                         $.each(data, function(key, value) {
@@ -66,7 +68,16 @@
                     }
                 });
             });
+            var savedData = sessionStorage.getItem('dictionaryData');
+            if (savedData !== null) {
+                var ul = $('#dictionary-keys');
+                ul.empty();
+                $.each(JSON.parse(savedData), function(key, value) {
+                    ul.append('<button id="saved_fav_button" value="' + key + '" onclick="modify_dest()">' + key + '</button>');
+                });
+            }
         });
+
 
     function modify_dest() {
         $(document).ready(function(){
@@ -82,7 +93,6 @@
                             const option1 = document.createElement('option');
                             const option2 = document.createElement('option');
                             option1.text = value['building_name'];
-                            alert(value['building_name'])
                             option1.value =  value['building_name'];
 
                             option2.text =  value['door_name'];
