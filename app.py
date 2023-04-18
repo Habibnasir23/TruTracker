@@ -310,6 +310,10 @@ def logout():
     session["name"] = None
     return redirect("/")
 
+@app.route("/faq")
+def faq():
+    return render_template("faq.html")
+
 
 @app.route("/signup", methods=["GET", "POST"])
 def signUp():

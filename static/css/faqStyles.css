@@ -1,0 +1,109 @@
+#bg {
+    background-image: url('/static/background.jpg');
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    filter: blur(5px);
+  }
+
+  /* Typography */
+body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  h1 {
+    font-size: 2rem;
+    margin: 0;
+    color: rgb(93, 4, 93);
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  p {
+    margin: 0;
+    margin-left: 15px;
+  }
+
+  form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #0096c7; /*make labels blue?*/
+  }
+
+  .container {
+    margin: 2rem auto;
+    max-width: 800px;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 0.3rem;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.2);
+    position: relative;
+  }
+
+  .text {
+    position: relative;
+    top: 15px;
+    margin-left: -300px;
+  }
+
+/*button styling*/
+  .button-9 {
+    appearance: button;
+    backface-visibility: hidden;
+    background-color: #405cf5;
+    border-radius: 6px;
+    border-width: 0;
+    box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset,
+    rgba(50, 50, 93, .1) 0 2px 5px 0,rgba(0, 0, 0, .07) 0 1px 1px 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    font-family: -apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif;
+    font-size: 100%;
+    height: 44px;
+    line-height: 1.15;
+    outline: none;
+    overflow: hidden;
+    padding: 0 25px;
+    position: absolute;
+    text-align: center;
+    text-transform: none;
+    transform: translateZ(0);
+    transition: all .2s,box-shadow .08s ease-in;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: 50%;
+    margin-left: -45px;
+    margin-top: -10px;
+   }
+   
+   .button-9:hover{
+    background: #2c52ed;
+   }
+   
+   .button-9:disabled {
+    cursor: default;
+   }
+   
+   .button-9:focus {
+    box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset, rgba(50, 50, 93, .2) 0 6px 15px 0, rgba(0, 0, 0, .1) 0 2px 2px 0, rgba(50, 151, 211, .3) 0 0 0 4px;
+   }
+   h5{
+   margin-left: 5px;
+   text-align: center;
+   }
