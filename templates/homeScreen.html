@@ -41,6 +41,8 @@
     function fav_destination_to_backend() {
     var fav_buidling_name = document.getElementById("building_name_dist").value;
     var fav_door_name = document.getElementById("door_name_dist").value;
+    var fav_name = document.getElementById("favorite_name").value;
+    alert(fav_name);
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "/process_saved_data", true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -49,7 +51,7 @@
             alert(xhr.responseText);
         }
     };
-    xhr.send("fav_buidling_name=" + fav_buidling_name + "&fav_door_name="+ fav_door_name );
+    xhr.send("fav_buidling_name=" + fav_buidling_name + "&fav_door_name="+ fav_door_name + "&favorite_name=" + fav_name);
     }
     $(document).ready(function() {
             $('#add_fav').click(function() {
@@ -156,8 +158,28 @@
         </div>
         <div class="btn-group">
             <button id="search" type="submit" name="submit_search">Search</button>
-            <button id="add_fav" type="button" onclick="fav_destination_to_backend()">Add Favorite</button>
+            <button id="add_fav" type="button" onclick="showForm()">Add Favorite</button>
          </div>
+         <div id="fav_form" style="display: none;">
+        <form id="favorite_form">
+            <label for="favorite_name">Enter a name for this favorite:</label>
+            <input type="text" name="favorite_name" id="favorite_name">
+            <button type="submit" name="submit_form" id="submit_form" onclick="submitForm()">Submit</button>
+        </form>
+        <script>
+function showForm() {
+    var form = document.getElementById("fav_form");
+    form.style.display = "block";
+}
+
+function submitForm() {
+    var form = document.getElementById("fav_form");
+    form.style.display = "none";
+    alert("Inside the submitForm function");
+    fav_destination_to_backend();
+}
+</script>
+    </div>
     </form>
 </div>
 </body>

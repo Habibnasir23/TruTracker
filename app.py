@@ -245,6 +245,7 @@ print(this_loc)
 all_saved_locs = get_all_saved_locations("habibnasir23@gmail.com")
 print(all_saved_locs)
 
+
 @app.route("/")
 def index():
     if not session.get("name"):
@@ -270,19 +271,24 @@ def home():
 
     return render_template('homeScreen.html', building_name=building_dict.keys(), building_dict=building_dict)
 
+
 @app.route("/process_saved_data", methods=["POST"])
 def process_saved_data():
     fav_building_name = request.form.get("fav_buidling_name")
     fav_door_name = request.form.get("fav_door_name")
     fav_email = session['email']
-    add_saved_location(fav_email,fav_building_name,fav_door_name,"Yourmom")
+    fav_name = request.form.get("favorite_name")
+    print(fav_name)
+    add_saved_location(fav_email, fav_building_name, fav_door_name, fav_name)
     return jsonify({"Favorite Location has been Submitted": "Data received!"})
+
 
 @app.route('/api/dictionary')
 def get_dictionary():
     fav_email = session['email']
     dictionary = get_all_saved_locations(fav_email)
     return jsonify(dictionary)
+
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
