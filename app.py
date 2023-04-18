@@ -229,21 +229,6 @@ transfer_data_from_file_to_database()
 add_buildings()
 add_ryle_data()
 add_user()
-# verify_email("habibnasir23@gmail.com")
-verify_pswd("tru123")
-# verify_email("hvhb@gmail.com")
-verify_pswd("sadwa")
-
-this_lat = (get_lat("Ryle Hall", "Southwest"))
-print(this_lat)
-this_long = (get_long("West Campus Suites", "Southeast"))
-print(this_long)
-add_saved_location("habibnasir23@gmail.com", "Ryle Hall", "Southwest", "Home")
-add_saved_location("habibnasir23@gmail.com", "Ryle Hall", "West", "Work")
-this_loc = get_saved_locations("habibnasir23@gmail.com", "Home")
-print(this_loc)
-all_saved_locs = get_all_saved_locations("habibnasir23@gmail.com")
-print(all_saved_locs)
 
 
 @app.route("/")
@@ -278,7 +263,6 @@ def process_saved_data():
     fav_door_name = request.form.get("fav_door_name")
     fav_email = session['email']
     fav_name = request.form.get("favorite_name")
-    print(fav_name)
     add_saved_location(fav_email, fav_building_name, fav_door_name, fav_name)
     return jsonify({"Favorite Location has been Submitted": "Data received!"})
 

@@ -186,3 +186,19 @@ body {
   .btn-group button:not(:last-child) {
     border-bottom: none; /* Prevent double borders */
   }
+
+  #saved_fav_button{
+    background-color:#0096c7;
+    color:#f9f9f9;
+    border: none;
+    border-radius: .3rem;
+    margin-bottom: 10px;
+    width: 50px;
+    height: 20px;
+    /*display: block;*/
+    position: relative;
+  }
+
+  #saved_fav_button:hover{
+    background-color:rgb(93, 4, 93);
+  }
