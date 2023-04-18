@@ -5,77 +5,49 @@
     <meta name="viewport" content="width=device-wdith, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <link rel="stylesheet" href={{ url_for('static', filename='css/homeStyles.css') }}>
+    <link rel="stylesheet" href={{ url_for('static', filename='css/faqStyles.css') }}>
 
 </head>
 <body>
-<div style="position: fixed; 
-     top: 50px; left: 70px; width: 163px; height: 100px;
-     background-color:white; border-radius: 5px; border:2px solid grey;z-index: 900;">
-    <h5>Route new destination<h5>
-    <button class="button-9" onclick="goBack()" role="button">Back</button>
+    <div style="position: fixed; 
+    top: 50px; left: 70px; width: 163px; height: 100px;
+    background-color:white; border-radius: 5px; border:2px solid grey;z-index: 900;">
+   <h5>Return to home screen<h5>
+   <button class="button-9" onclick="goBack()" role="button">Back</button>
 
-    <script>
-    function goBack(){
-        window.location.href = "/home"
-    }
-    </script>
+   <script>
+   function goBack(){
+       window.location.href = "/home"
+   }
+   </script>
 
-<style>
-.button-9 {
-  appearance: button;
-  backface-visibility: hidden;
-  background-color: #405cf5;
-  border-radius: 6px;
-  border-width: 0;
-  box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset,rgba(50, 50, 93, .1) 0 2px 5px 0,rgba(0, 0, 0, .07) 0 1px 1px 0;
-  box-sizing: border-box;
-  color: #fff;
-  cursor: pointer;
-  font-family: -apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif;
-  font-size: 100%;
-  height: 44px;
-  line-height: 1.15;
-  outline: none;
-  overflow: hidden;
-  padding: 0 25px;
-  position: absolute;
-  text-align: center;
-  text-transform: none;
-  transform: translateZ(0);
-  transition: all .2s,box-shadow .08s ease-in;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  width: 50%;
-  margin-left: 10px;
-}
-
-.button-9:hover{
-  background: #2c52ed;
-}
-
-.button-9:disabled {
-  cursor: default;
-}
-
-.button-9:focus {
-  box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset, rgba(50, 50, 93, .2) 0 6px 15px 0, rgba(0, 0, 0, .1) 0 2px 2px 0, rgba(50, 151, 211, .3) 0 0 0 4px;
-}
-h5{
-margin-left: 5px;
-text-align: center;
-}
-</style>
-    </div>
+   </div>
 </body>
 <body>
-  <div id="bg"></div>
-    
+  <div id="bg"></div>    
 <div class="container">
     <h1>TruTracker FAQs</h1>
     <form action="#" method="post">
-        
+        <label>What is TruTracker?</label>
+            <p>TruTracker is designed to help students new to Truman navigate campus by providing an experience tailored to their needs</p>
+        <label>Do I have to use my Truman email?</label>
+            <p>Nope! You don't need to use your Truman email. Any email address will suffice!</p>
+        <label>Is there a limit to how many locations I can save?</label>
+            <p>Yes, each user is capped at 5 saved locations at a time but feel free to update your saved locations as often as you need!</p>
+        <label>Am I able to search for more than one destination?</label>
+            <p>Yes! Just be sure to hit the back button to move from the map screen back to the home screen</p>
+        <label>How do I select my starting or ending position?</label>
+            <p>One is able to select their current location and destination on the home screen via the dropdown menus present on the home page. From there, one may select the corresponding door they wish to use to enter and exit.</p>
+        <label>Some buildings appear to have different names than what I am familiar with. Why is this?</label>
+            <p>TruTracker is built with the help of publicly available external mapping software. As such, buildings may be misnamed, not up to date, or edited. Differing building names do not reflect the TruTracker team's beliefs or opinions.</p>
+        <label>Am I able to have a text version of this map?</label>
+            <p>While not currently available, a text version of directions is in the works from the TruTracker team.</p>
+        <label>he route given on my map does not appear to be correct. Why is this?</label>
+            <p>The TruTracker program is built to only include recognized trails, roads, and pathways. Many common routes across the Truman campus utilize so-called “Desire Paths”, which the TruTracker team does not recognize as legitimate pathways due to safety and liability concerns.</p>
+        <label>Is an account necessary to use TruTracker? </label>
+            <p>In order to make use of TruTracker’s custom locations functionality, one must make and utilize an account. </p>
+        <label>I enjoy using this software and wish to support the TruTracker team. How may I do so?</label>
+            <p>One may email the professor responsible for this course, Dr. Ruthie Halma, at rdare@truman.edu and encourage them to grade the TruTracker team highly. </p>
     </form>
 </div>
 </body>
