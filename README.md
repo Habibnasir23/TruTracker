@@ -19,13 +19,24 @@
 </list>
 
 Here are the steps a new user can take to interact with the website:
+<list> 
+    <li>$ 1.Click the "Sign-up now" button to create a new account. The user will be prompted to enter their name, email address, and password.</li>
+    <li>$ 2.Use the newly created account to log in to TruTracker. </li>
+    <li>$ 3.Select your desired starting and ending locations using the drop-down menu options. </li>
+    <li>$ 4.Click the "Search" button, and the website will display the route. </li>
+    <li>$ 5.Click the "Back" button located at the top left corner of the page. </li>
+    <li>$ 6.To add a location to your favorites, fill out the options with your desired starting and ending locations and then press the "Add Favorite" button. </li>
+    <li>$ 7.The page will prompt the user to add a name for their favorite location. </li>
+    <li>$ 8.Enter the desired name of your favorite location and click "Submit." </li>
+    <li>$ 9.Your saved location will now appear in the Menu. Click on it to autofill the "Where to?" options for both Building Name and Door.</li>
+</list>
 
-1.Click the "Sign-up now" button to create a new account. The user will be prompted to enter their name, email address, and password.
-2.Use the newly created account to log in to TruTracker.
-3.Select your desired starting and ending locations using the drop-down menu options.
-4.Click the "Search" button, and the website will display the route.
-5.Click the "Back" button located at the top left corner of the page.
-6.To add a location to your favorites, fill out the options with your desired starting and ending locations and then press the "Add Favorite" button.
-7.The page will prompt the user to add a name for their favorite location.
-8.Enter the desired name of your favorite location and click "Submit."
-9.Your saved location will now appear in the Menu. Click on it to autofill the "Where to?" options for both Building Name and Door.
+
+
+
+
+
+
+
+
+
