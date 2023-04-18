@@ -54,7 +54,7 @@
     xhr.send("fav_buidling_name=" + fav_buidling_name + "&fav_door_name="+ fav_door_name + "&favorite_name=" + fav_name);
     }
     $(document).ready(function() {
-            $('#add_fav').click(function() {
+            $('#submit_form').click(function() {
                 $.ajax({
                     url: '/api/dictionary',
                     type: 'GET',
