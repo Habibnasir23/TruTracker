@@ -1,19 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+    <!-- define the head of the page -->
 <head>
+    <!--Set up basic aspects-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-wdith, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <!--Link to css style sheet-->
     <link rel="stylesheet" href={{ url_for('static', filename='css/homeStyles.css') }}>
+    <!-- link to ajax api -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- script to run functions on page -->
     <script>
     let building_dict = {{ building_dict|tojson }};
+    // Function to update the starting building door options
     function updateBuildingdoor_src() {
+        // get the building name
         const building_name_js = document.getElementById('building_name_src').value;
         const door_name_js = document.getElementById('door_name_src');
         door_name_js.innerHTML = ''; // Clear previous options
         const door_value = building_dict[building_name_js];
+        // populate the list of doors
         if (door_value) {
             for (let i = 0; i < door_value.length; i++) {
                 const option = document.createElement('option');
@@ -108,69 +116,100 @@
     }
 </script>
 </head>
+<!-- Define the main body of the page -->
 <body>
+    <!-- create the background -->
   <div id="bg"></div>
+     <!-- Create menu in the upper left -->
     <div class="Menu">
     <button class="dropbtn">Menu</button>
+    <!-- Create the content for the menu -->
     <div class="Menu-content">
-        <div id="dropdown-submenu">
+        <!--<div id="dropdown-submenu">-->
+            <!-- Where saved locations will populate -->
             <a href="#">Saved Locations</a>
-            <div id="dictionary-keys">
-
-            </div>
-        </div>
+            <div id="dictionary-keys"></div>
+        <!--</div>-->
+        <!-- Links for user navigation -->
         <a href="/faq">FAQ</a>
         <a href="/login">Logout</a>
     </div>
 </div>
+<!-- Create main containter to hold main contents of the page -->
 <div class="container">
+    <!-- main header at top of main form area -->
     <h1>TruTracker</h1>
+    <!-- Main form for user to interact with -->
     <form action="#" method="post">
+        <!-- Section that allows user to select starting location -->
         <div id="starting_location">
+            <!-- Labels to guide user -->
             <p>Where from?</p>
             <label for="building_name_src">Building Name:</label>
+            <!-- Take user selection via a dropdown menu -->
             <select name="building_name_src" id="building_name_src" onchange="updateBuildingdoor_src()">
                 <option value="" disabled selected>Select Building</option>
                     {% for building in building_name|sort %}#}
                         <option value="{{ building }}">{{ building }}</option>#}
             {% endfor %}#}
             </select>
+
+            <!-- Section to allow user to select their starting door -->
             <label for="door_name_src">Door</label>
+            <!-- Display list of doors that varies based on the user's starting location -->
             <select name= "door_name_src" select = "door_name_src" id="door_name_src">
                 <option value="">Select Door</option>
             </select>
         </div>
 
+
+
+        <!-- Section responsible for user selecting thier end location -->
         <div id="ending_location">
+            <!-- Labels to direct user -->
             <p>Where to?</p>
             <label for="building_name_dist">Building Name:</label>
+            <!-- Take user selection via a dropdown menu -->
             <select name="building_name_dist" id="building_name_dist" onchange="updateBuildingdoor_dist()">
                 <option value="" disabled selected>Select Building</option>
                     {% for building in building_name|sort %}#}
                         <option value="{{ building }}">{{ building }}</option>#}
             {% endfor %}#}
             </select>
+
+            <!-- Section to allow user to select their ending door -->
             <label for="door_name_dist">Door</label>
+            <!-- Display list of doors that varies based on the user's ending location -->
             <select name="door_name_dist" id="door_name_dist">
                 <option value="">Select Door</option>
             </select>
         </div>
+
+        <!-- Create group of buttons for organization -->
         <div class="btn-group">
+            <!-- button to allow the user to search and view the map -->
             <button id="search" type="submit" name="submit_search">Search</button>
+            <!-- button to allow the user to add a favorite -->
             <button id="add_fav" type="button" onclick="showForm()">Add Favorite</button>
          </div>
+         <!-- To allow the user to name their favorite location -->
          <div id="fav_form" style="display: none;">
         <form id="favorite_form">
+            <!-- prompt the user -->
             <label for="favorite_name">Enter a name for this favorite:</label>
             <input type="text" name="favorite_name" id="favorite_name">
+            <!-- submit the form and view the map once name is given -->
             <button type="submit" name="submit_form" id="submit_form" onclick="submitForm()">Submit</button>
         </form>
+
+        <!-- Additional script for the naming of favorite location -->
         <script>
+// Show the form for naming favorite location
 function showForm() {
     var form = document.getElementById("fav_form");
     form.style.display = "block";
 }
-
+// submit the form for naming favorite location
 function submitForm() {
     var form = document.getElementById("fav_form");
     form.style.display = "none";

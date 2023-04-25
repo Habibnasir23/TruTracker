@@ -1,3 +1,4 @@
+/*format the background*/
 #bg {
   background-image: url('/static/background.jpg');
   position: fixed;
@@ -9,93 +10,100 @@
   filter: blur(5px);
 }
 
-/* Typography */
+  /* Define root color scheme */
+  :root {
+    --primary-color: #0096c7;
+    --secondary-color: rgb(93, 4, 93);
+    --text-color: #333;
+    --tertiary-color: #f9f9f9;
+  }
+
+/* formatting for the body */
 body {
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
     line-height: 1.5;
   }
-  
+  /*main header for page*/
   h1 {
     font-size: 2rem;
     margin: 0;
-    color: rgb(93, 4, 93);
+    color:  var(--secondary-color);
   }
-  
-  h2 {
-    font-size: 1.5rem;
-  }
-  
+
+  /*smaller label above drop down menus*/
   p {
     margin: 0;
   }
   
-  /* Colors */
-  :root {
-    --primary-color: #0096c7;
-    --secondary-color: #f26419;
-    --text-color: #333;
-    background-color: #fff;
-  }
-  
+  /*Code block for menu in upper left*/
   .Menu {
     position: relative;
     display: inline-block;
     margin: 1rem;
   }
+  
+  /*Actual menu button*/
   .dropbtn {
     background-color: var(--primary-color);
-    color: white;
+    color: var(--tertiary-color);
     padding: 1rem;
     font-size: 1.2rem;
     border: none;
     cursor: pointer;
     border-radius: 0.3rem;
   }
+  /*add hover feature*/
   .dropbtn:hover, .dropbtn:focus {
-    background-color: rgb(93, 4, 93);
+    background-color: var(--secondary-color);
   }
+  /*format content of the menu*/
   .Menu-content {
     display: none;
     position: absolute;
     z-index: 1;
     top: 3rem;
     right: 1;
-    background-color: #f9f9f9;
+    background-color: var(--tertiary-color);
     min-width: 10rem;
     box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.2);
     border-radius: 0.3rem;
     transition: 1s;
   }
-  
+  /*format each menu item*/
   .Menu-content a {
     display: block;
     padding: 1rem;
     color: var(--text-color);
     text-decoration: none;
   }
-  
+  /*add hover feature*/
   .Menu-content a:hover {
-    background-color: rgb(93, 4, 93);
-    color: #f9f9f9;
+    background-color: var(--secondary-color);
+    color: var(--tertiary-color);
   }
-  
+  /*add hover feature*/
   .Menu:hover .Menu-content {
     display: block;
   }
+
+
+  /*Wasn't sure if this code is needed, but 
+  the saved locations are not formatted properly 
+  this may be the reason
   
-  /*Saved locations drop down*/
-  /* Show the dropdown menu on hover */
+  /*Saved locations drop down
+  /* Show the dropdown menu on hover 
 .dropdown:hover .dropdown-content {
   display: block;
 }
 
-/* Style the submenu */
+/* Style the submenu 
 .dropdown-submenu {
   position: relative;
 }
 
-/* Style the submenu content (hidden by default) */
+/* Style the submenu content (hidden by default) 
 .dropdown-submenu-content {
   display: none;
   position: absolute;
@@ -107,36 +115,44 @@ body {
   z-index: 1;
 }
 
-/* Show the submenu content on hover */
+/* Show the submenu content on hover 
 .dropdown-submenu:hover .dropdown-submenu-content {
   display: block;
 }
 
 /*end submenu code*/
 
+
+
+
+
+  /*To hold the form and main info on the page*/
   .container {
     margin: 2rem auto;
     max-width: 800px;
     padding: 2rem;
-    background-color: #f9f9f9;
+    background-color: var(--tertiary-color);
     border-radius: 0.3rem;
     box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.2);
     position: relative;
   }
   
+  /*Format for the form itself*/
   form {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
   }
   
+  /*Format labels above the dropdown menu*/
   form label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: bold;
-    color: #0096c7; /*make labels blue?*/
+    color: var(--primary-color);
   }
   
+  /*Format the drop down menus for the doors and building*/
   form select {
     display: block;
     width: 100%;
@@ -146,27 +162,25 @@ body {
     border: 1px solid var(--primary-color);
   }
 
-  #iframeHolder {
-    margin-top: 1rem;
-  }
-
+  /*Format the add favorite button*/
   #add_fav{
-    background-color:#0096c7;
-    color:#f9f9f9;
+    background-color: var(--primary-color);
+    color:var(--tertiary-color);
     border: none;
     border-radius: .3rem;
     width: 300px;
     height: 50px;
     display: block;
   }
-
+  /*add hover feature*/
   #add_fav:hover {
-    background-color: rgb(93, 4, 93);
+    background-color: var(--secondary-color);
   }
 
+  /*Format Search button*/
   #search{
-    background-color:#0096c7;
-    color:#f9f9f9;
+    background-color: var(--primary-color);
+    color: var(--tertiary-color);
     border: none;
     border-radius: .3rem;
     margin-bottom: 10px;
@@ -174,31 +188,33 @@ body {
     height: 50px;
     display: block;
   }
-
+  /*add hover feature*/
   #search:hover {
-    background-color:rgb(93, 4, 93);
+    background-color: var(--secondary-color);
   }
 
+  /* Make the buttons appear below each other */
   .btn-group button {
-    display: block; /* Make the buttons appear below each other */
+    display: block; 
   }
-  
+  /* Prevent double borders */
   .btn-group button:not(:last-child) {
-    border-bottom: none; /* Prevent double borders */
+    border-bottom: none; 
   }
 
+  /*Format saved favorite button
+  To be in the drop down menu in upper left*/
   #saved_fav_button{
-    background-color:#0096c7;
-    color:#f9f9f9;
+    background-color: var(--primary-color);
+    color: var(--tertiary-color);
     border: none;
     border-radius: .3rem;
     margin-bottom: 10px;
     width: 50px;
     height: 20px;
-    /*display: block;*/
     position: relative;
   }
-
+  /*add hover feature*/
   #saved_fav_button:hover{
-    background-color:rgb(93, 4, 93);
+    background-color: var(--secondary-color);
   }
