@@ -188,9 +188,11 @@
         <!-- Create group of buttons for organization -->
         <div class="btn-group">
             <!-- button to allow the user to search and view the map -->
-            <button id="search" type="submit" name="submit_search">Search</button>
+            <!-- Button is disabled to start to prevent the user from searching with no start or end points -->
+            <button id="search" type="submit" name="submit_search" disabled>Search</button>
             <!-- button to allow the user to add a favorite -->
-            <button id="add_fav" type="button" onclick="showForm()">Add Favorite</button>
+            <!-- Button is disabled to start to prevent the user from favoriting with no start or end points -->
+            <button id="add_fav" type="button" onclick="showForm()" disabled>Add Favorite</button>
          </div>
          <!-- To allow the user to name their favorite location -->
          <div id="fav_form" style="display: none;">
@@ -219,5 +221,30 @@ function submitForm() {
     </div>
     </form>
 </div>
+
+<!-- Script to control the search and add favorite button -->
+<script>
+  // Get references to the select elements, search button, and add favorite button
+  const buildingNameSrcSelect = document.getElementById('building_name_src');
+  const buildingNameDistSelect = document.getElementById('building_name_dist');
+  const searchButton = document.getElementById('search');
+  const addFavoriteButton = document.getElementById('add_fav');
+
+
+  // Add an event listener to each select element
+  buildingNameSrcSelect.addEventListener('change', handleSelectChange);
+  buildingNameDistSelect.addEventListener('change', handleSelectChange);
+
+  function handleSelectChange() {
+    // Check if both select elements have a selected value
+    const isSrcSelected = buildingNameSrcSelect.value !== '';
+    const isDistSelected = buildingNameDistSelect.value !== '';
+
+    // Enable or disable the search button and add favorite button based on whether both select elements have a selected value
+    searchButton.disabled = !isSrcSelected || !isDistSelected;
+    addFavoriteButton.disabled = !isSrcSelected || !isDistSelected;
+  }
+</script>
+
 </body>
 </html>
