@@ -199,7 +199,8 @@
         <form id="favorite_form">
             <!-- prompt the user -->
             <label for="favorite_name">Enter a name for this favorite:</label>
-            <input type="text" name="favorite_name" id="favorite_name">
+            <!-- Allow the user to input a name for the location -->
+            <input type="text" name="favorite_name" id="favorite_name" placeholder="maximum 10 characters" maxlength="10" style="width: 150px;">
             <!-- submit the form and view the map once name is given -->
             <button type="submit" name="submit_form" id="submit_form" onclick="submitForm()">Submit</button>
         </form>
