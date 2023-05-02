@@ -294,6 +294,10 @@ def logout():
     session["name"] = None
     return redirect("/")
 
+@app.route("/forgot")
+def forgot():
+    return render_template("forgotPassword.html")
+
 @app.route("/faq")
 def faq():
     return render_template("faq.html")
