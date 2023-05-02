@@ -18,7 +18,7 @@
       <!--field to enter their name-->
        <div class="field name">
         <div class="input-area">
-            <input i="name" type="text" placeholder="Name" name="name">
+            <input i="name" type="text" placeholder="Name" name="name" minlength="2" maxlength="10" pattern="[A-Za-z\s]+" required>
             <i class="icon fas fa-regular fa-id-card"></i>
             <!--error icon and message to be displayed-->
             <i class="error error-icon fas fa-exclamation-circle"></i>
@@ -29,7 +29,7 @@
       <!--field to enter thier email-->
       <div class="field email">
         <div class="input-area">
-          <input i="email" type="text" placeholder="Email Address" name="email">
+          <input i="email" type="email" placeholder="Email Address" name="email" required>
           <!--icon to represent the email field-->
           <i class="icon fas fa-envelope"></i>
           <!--error icon-->
@@ -41,7 +41,7 @@
       <!--password field-->
       <div class="field password">
         <div class="input-area">
-          <input i="password" type="password" placeholder="Password" name="password">
+          <input i="password" type="password" placeholder="Password" name="password" minlength="8" required>
           <!--icon to represent the email field-->
           <i class="icon fas fa-lock"></i>
           <!--error icon-->

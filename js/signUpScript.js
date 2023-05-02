@@ -26,12 +26,12 @@ form.onsubmit = (e)=>{
   pInput.onkeyup = ()=>{checkPass();} //calling checkPassword function on pass input keyup
 
   function checkName(){
-    if(pInput.value == ""){ //if name is empty then add error and remove valid class
-      pField.classList.add("error");
-      pField.classList.remove("valid");
+    if(nInput.value == ""){ //if name is empty then add error and remove valid class
+      nField.classList.add("error");
+      nField.classList.remove("valid");
     }else{ //if name is empty then remove error and add valid class
-      pField.classList.remove("error");
-      pField.classList.add("valid");
+      nField.classList.remove("error");
+      nField.classList.add("valid");
     }
   }
 
