@@ -9,6 +9,7 @@
     <li>$ pip install pandas </li>
     <li>$ pip install numpy </li>
     <li>$ pip install flask_sqlalchemy </li>
+    <li>$ pip install bcrypt </li>
 </list>
 
 <h1> How to run </h1>
