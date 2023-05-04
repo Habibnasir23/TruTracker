@@ -13,6 +13,7 @@ from flask import Flask, render_template, jsonify
 import folium
 import requests
 import pandas as pd
+import bcrypt
 version = 1
 
 from flask import Flask, request, render_template, session, redirect, url_for
@@ -182,7 +183,9 @@ def verify_user(useremail, userpswd):
         print("this email is valid")
         user = User.query.filter_by(user_email=useremail).first()
         pswd = user.user_pswd
-        if pswd != userpswd:
+        pswdBytes = userpswd.encode('utf-8')
+        result = bcrypt.checkpw(pswdBytes, pswd)
+        if result == False:
             print("the password does not match the username")
             return False
         print("the password matches the username")
@@ -200,6 +203,10 @@ def verify_pswd(password):
     else:
         print("this password is not valid")
         return False
+
+def hash_pswd(password):
+    hashed_pswd = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+    return hashed_pswd
 
 
 def get_directions_response(lat_src,long_src,lat_dist,long_dist):
@@ -318,6 +325,10 @@ def logout():
     session["name"] = None
     return redirect("/")
 
+@app.route("/forgot")
+def forgot():
+    return render_template("forgotPassword.html")
+
 @app.route("/faq")
 def faq():
     return render_template("faq.html")
@@ -333,7 +344,7 @@ def signUp():
         session['name'] = name
         session['email'] = email
         session['password'] = password
-        add_user2(name, email, password)
+        add_user2(name, email, hash_pswd(password))
         return redirect("/login")
     return render_template("signUpScreen.html")
 
