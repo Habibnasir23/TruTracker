@@ -17,8 +17,9 @@ version = 1
 
 from flask import Flask, request, render_template, session, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import update
 from datetime import timedelta
-
+import smtplib
 
 db = SQLAlchemy()
 
@@ -128,15 +129,6 @@ def add_ryle_data():
     db.session.commit()
 
 
-def add_user():
-    user1 = User("habib", "habib@gmail.com", "tru123")
-    db.session.add(user1)
-    db.session.commit()
-    user2 = User("mhmd123", "mhmd@gmail.com", "prince123")
-    db.session.add(user2)
-    db.session.commit()
-
-
 def add_user2(u_name, u_email, u_password):
     user = User(u_name, u_email, u_password)
     db.session.add(user)
@@ -221,6 +213,36 @@ def get_directions_response(lat_src,long_src,lat_dist,long_dist):
     return response
 
 
+def change_password(email, new_pswd):
+    user = User.query.filter_by(user_email=email).first()
+    user.user_pswd = new_pswd
+    db.session.commit()
+
+
+def send_email(receiver_email):
+    # If you want to use this without the email part just comment out lines
+    sendEmail = "Change your fucking password dumbass"
+    # The email you want to use to send emails to yourself, can be the same one
+    # YOU NEED A APP SPECIFIC PASSWORD: https://support.google.com/accounts/answer/185833?hl=en
+
+    email = "trumantracker@gmail.com"
+    emailPassword = "cwulpiyqswkxeidx"
+    # The email you want to be able to receive emails for updates
+    emailRec = receiver_email
+    # The smtp for your email provider, followed by port number
+    # ex: "smtp.gmail.com", "smtp.mail.yahoo.com", smtp-mail.hotmail.com
+    # may need to change this to your email port number for smtp
+    emailServer = smtplib.SMTP('smtp.gmail.com', 587)
+    type(emailServer)
+    # starts connection
+    emailServer.ehlo()
+    # encryption
+    emailServer.starttls()
+    emailServer.login(email, emailPassword)
+
+    emailSubject = ''
+    emailServer.sendmail(email, emailRec, emailSubject + sendEmail)
+
 app = create_app()
 app.app_context().push()
 db.drop_all()
@@ -228,7 +250,9 @@ db.create_all()
 transfer_data_from_file_to_database()
 add_buildings()
 add_ryle_data()
-add_user()
+add_user2("habib", "habib@gmail.com", "hello")
+change_password("habib@gmail.com", "nothello")
+send_email("habibnasir23@gmail.com")
 
 
 @app.route("/")
