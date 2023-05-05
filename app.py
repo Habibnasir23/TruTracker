@@ -21,6 +21,8 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import update
 from datetime import timedelta
 import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 db = SQLAlchemy()
 
@@ -231,7 +233,6 @@ def send_email(receiver_email):
     sendEmail = "Please follow the link below to change your password: \n http://127.0.0.1:5000/ChangePassword"
     # The email you want to use to send emails to yourself, can be the same one
     # YOU NEED A APP SPECIFIC PASSWORD: https://support.google.com/accounts/answer/185833?hl=en
-
     email = "trumantracker@gmail.com"
     emailPassword = "cwulpiyqswkxeidx"
     # The email you want to be able to receive emails for updates
@@ -240,15 +241,26 @@ def send_email(receiver_email):
     # ex: "smtp.gmail.com", "smtp.mail.yahoo.com", smtp-mail.hotmail.com
     # may need to change this to your email port number for smtp
     emailServer = smtplib.SMTP('smtp.gmail.com', 587)
-    type(emailServer)
     # starts connection
     emailServer.ehlo()
     # encryption
     emailServer.starttls()
     emailServer.login(email, emailPassword)
 
-    emailSubject = "Please follow the link below to change your password: \n http://127.0.0.1:5000/ChangePassword"
-    emailServer.sendmail(email, emailRec, emailSubject + sendEmail)
+    emailSubject = "Password Reset Link"
+    # Create a message object
+    message = MIMEMultipart()
+    message['From'] = email
+    message['To'] = emailRec
+    message['Subject'] = emailSubject
+
+    # Add the message body
+    body = sendEmail
+    message.attach(MIMEText(body, 'plain'))
+
+    # Send the email
+    emailServer.sendmail(email, emailRec, message.as_string())
+    emailServer.quit()
 
 app = create_app()
 app.app_context().push()
