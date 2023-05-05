@@ -222,13 +222,13 @@ def get_directions_response(lat_src,long_src,lat_dist,long_dist):
 
 def change_password(email, new_pswd):
     user = User.query.filter_by(user_email=email).first()
-    user.user_pswd = new_pswd
+    user.user_pswd = hash_pswd(new_pswd)
     db.session.commit()
 
 
 def send_email(receiver_email):
     # If you want to use this without the email part just comment out lines
-    sendEmail = "Change your fucking password dumbass"
+    sendEmail = "Please follow the link below to change your password: \n http://127.0.0.1:5000/ChangePassword"
     # The email you want to use to send emails to yourself, can be the same one
     # YOU NEED A APP SPECIFIC PASSWORD: https://support.google.com/accounts/answer/185833?hl=en
 
@@ -247,7 +247,7 @@ def send_email(receiver_email):
     emailServer.starttls()
     emailServer.login(email, emailPassword)
 
-    emailSubject = ''
+    emailSubject = "Please follow the link below to change your password: \n http://127.0.0.1:5000/ChangePassword"
     emailServer.sendmail(email, emailRec, emailSubject + sendEmail)
 
 app = create_app()
@@ -259,7 +259,7 @@ add_buildings()
 add_ryle_data()
 add_user2("habib", "habib@gmail.com", "hello")
 change_password("habib@gmail.com", "nothello")
-send_email("habibnasir23@gmail.com")
+#ssend_email("habibnasir23@gmail.com")
 
 
 @app.route("/")
@@ -325,16 +325,35 @@ def logout():
     session["name"] = None
     return redirect("/")
 
-@app.route("/forgot")
+@app.route("/forgot", methods=["GET", "POST"])
 def forgot():
+    if request.method == "POST":
+        email = request.form.get("email")
+        session["email"] = email
+        send_email(email)
+        return render_template("loginScreen.html")
     return render_template("forgotPassword.html")
 
 @app.route("/faq")
 def faq():
     return render_template("faq.html")
 
-@app.route("/passwordReset")
-def passwordReset():
+@app.route("/ChangePassword", methods=["GET", "POST"])
+def ChangePassword():
+    if request.method == "POST":
+        email = request.form.get("email")
+        password1 = request.form.get("password1")
+        password2 = request.form.get("password2")
+        print(password1)
+        print(password2)
+        if password1 != password2:
+            print("Passwords do not match")
+            return render_template("passwordReset.html")
+        else:
+            change_password(email, password1)
+            session["email"] = email
+            session["password"] = password1
+            return redirect("/login")
     return render_template("passwordReset.html")
 
 
