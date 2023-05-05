@@ -333,6 +333,10 @@ def forgot():
 def faq():
     return render_template("faq.html")
 
+@app.route("/passwordReset")
+def passwordReset():
+    return render_template("passwordReset.html")
+
 
 @app.route("/signup", methods=["GET", "POST"])
 def signUp():
