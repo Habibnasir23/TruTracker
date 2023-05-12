@@ -102,36 +102,6 @@ class Saved_Locations(db.Model):
         self.latitude = lat
         self.longitude = long
 
-
-class Ryle_Hall(db.Model):
-    building_name = db.Column(db.String(100), primary_key=True)
-    distance_from_building = db.Column(db.Integer)
-    time_from_building = db.Column(db.Integer)
-
-    def __init__(self, name, dist, time):
-        self.building_name = name
-        self.distance_from_building = dist
-        self.time_from_building = time
-
-
-def add_buildings():
-    loc_1 = Locations("West Campus Suites", "North", 1211, 1222)
-    db.session.add(loc_1)
-    db.session.commit()
-    loc_2 = Locations("Recreation Center", "South", 1311, 1333)
-    db.session.add(loc_2)
-    db.session.commit()
-
-
-def add_ryle_data():
-    build_1 = Ryle_Hall("West Campus", 2, 20)
-    db.session.add(build_1)
-    db.session.commit()
-    build_2 = Ryle_Hall("Recreation Center", 1, 15)
-    db.session.add(build_2)
-    db.session.commit()
-
-
 def add_user2(u_name, u_email, u_password):
     user = User(u_name, u_email, u_password)
     db.session.add(user)
@@ -267,8 +237,6 @@ app.app_context().push()
 db.drop_all()
 db.create_all()
 transfer_data_from_file_to_database()
-add_buildings()
-add_ryle_data()
 add_user2("habib", "habib@gmail.com", "hello")
 change_password("habib@gmail.com", "nothello")
 #ssend_email("habibnasir23@gmail.com")
